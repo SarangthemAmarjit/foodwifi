@@ -11,11 +11,10 @@ part 'fetchdatabloc_state.dart';
 class FetchdatablocCubit extends Cubit<FetchdatablocState> {
   FetchdatablocCubit()
       : super(const FetchdatablocState(alldata: [], firstlistitems: [])) {
-    Get_alldata();
+    getalldata();
   }
 
-  Future<List<Foodwifimodel>?> Get_alldata() async {
-    List<Item?> data2 = [];
+  Future<List<Foodwifimodel>?> getalldata() async {
     try {
       final queryParameters = {
         'lat': '24.805823',
