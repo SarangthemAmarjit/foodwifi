@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:foodwifi/pages/homepage.dart';
+import 'package:foodwifi/pages/productpage.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -7,6 +8,9 @@ import 'package:foodwifi/pages/homepage.dart';
     AutoRoute(
       page: HomePage,
       initial: true,
+    ),
+    AutoRoute(
+      page: ProductPage,
     ),
   ],
 )
