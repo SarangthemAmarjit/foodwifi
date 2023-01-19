@@ -30,9 +30,13 @@ class AppRouter extends _i3.RootStackRouter {
       );
     },
     ProductRoute.name: (routeData) {
+      final args = routeData.argsAs<ProductRouteArgs>();
       return _i3.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i2.ProductPage(),
+        child: _i2.ProductPage(
+          key: args.key,
+          id: args.id,
+        ),
       );
     },
   };
@@ -64,12 +68,34 @@ class HomeRoute extends _i3.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.ProductPage]
-class ProductRoute extends _i3.PageRouteInfo<void> {
-  const ProductRoute()
-      : super(
+class ProductRoute extends _i3.PageRouteInfo<ProductRouteArgs> {
+  ProductRoute({
+    _i4.Key? key,
+    required String id,
+  }) : super(
           ProductRoute.name,
           path: '/product-page',
+          args: ProductRouteArgs(
+            key: key,
+            id: id,
+          ),
         );
 
   static const String name = 'ProductRoute';
+}
+
+class ProductRouteArgs {
+  const ProductRouteArgs({
+    this.key,
+    required this.id,
+  });
+
+  final _i4.Key? key;
+
+  final String id;
+
+  @override
+  String toString() {
+    return 'ProductRouteArgs{key: $key, id: $id}';
+  }
 }

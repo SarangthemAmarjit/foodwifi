@@ -89,6 +89,7 @@ class _HomePageState extends State<HomePage> {
             SliverLayoutBuilder(builder: (context, constraints) {
               var scrollvalue = constraints.scrollOffset;
               return SliverAppBar(
+                  stretch: true,
                   toolbarHeight: 105,
                   backgroundColor: Colors.white,
                   expandedHeight: 100,

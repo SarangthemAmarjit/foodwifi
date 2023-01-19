@@ -1,10 +1,9 @@
 part of 'below_product_cubit_cubit.dart';
 
-abstract class BelowProductCubitState extends Equatable {
-  const BelowProductCubitState();
+class BelowProductCubitState extends Equatable {
+  const BelowProductCubitState({required this.alldata});
+  final List<Productbelowmodel?> alldata;
 
   @override
   List<Object> get props => [];
 }
-
-class BelowProductCubitInitial extends BelowProductCubitState {}

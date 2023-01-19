@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 List<Productbelowmodel?>? productbelowmodelFromJson(String str) =>
-    json.decode(str) == null
-        ? []
-        : List<Productbelowmodel?>.from(
-            json.decode(str)!.map((x) => Productbelowmodel.fromJson(x)));
+    List<Productbelowmodel?>.from(
+        json.decode(str)!.map((x) => Productbelowmodel.fromJson(x)));
 
 String productbelowmodelToJson(List<Productbelowmodel?>? data) => json.encode(
     data == null ? [] : List<dynamic>.from(data.map((x) => x!.toJson())));
@@ -64,10 +62,10 @@ class Product {
   final bool? stock;
   final bool? isOffer;
   final String? offerType;
-  final String? offer;
+  final Offer? offer;
   final int? price;
   final String? img;
-  final Type? type;
+  final String? type;
   final String? description;
   final List<dynamic>? tags;
   final bool? customizable;
@@ -78,7 +76,7 @@ class Product {
         stock: json["stock"],
         isOffer: json["is_offer"],
         offerType: json["offer_type"],
-        offer: json["offer"],
+        offer: Offer.fromJson(json["offer"]),
         price: json["price"],
         img: json["img"],
         type: json["type"],

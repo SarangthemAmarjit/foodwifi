@@ -1,8 +1,8 @@
 part of 'upperproduct_cubit_cubit.dart';
 
-class UpperproductCubitState extends Equatable {
-  const UpperproductCubitState({required this.alldata});
-  final Productuppermodel alldata;
+class UpperproductState extends Equatable {
+  const UpperproductState({this.upperdata});
+  final Productuppermodel? upperdata;
 
   @override
   List<Object> get props => [];
