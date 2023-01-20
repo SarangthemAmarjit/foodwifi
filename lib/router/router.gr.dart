@@ -36,6 +36,7 @@ class AppRouter extends _i3.RootStackRouter {
         child: _i2.ProductPage(
           key: args.key,
           id: args.id,
+          itemname: args.itemname,
         ),
       );
     },
@@ -72,12 +73,14 @@ class ProductRoute extends _i3.PageRouteInfo<ProductRouteArgs> {
   ProductRoute({
     _i4.Key? key,
     required String id,
+    required String itemname,
   }) : super(
           ProductRoute.name,
           path: '/product-page',
           args: ProductRouteArgs(
             key: key,
             id: id,
+            itemname: itemname,
           ),
         );
 
@@ -88,14 +91,17 @@ class ProductRouteArgs {
   const ProductRouteArgs({
     this.key,
     required this.id,
+    required this.itemname,
   });
 
   final _i4.Key? key;
 
   final String id;
 
+  final String itemname;
+
   @override
   String toString() {
-    return 'ProductRouteArgs{key: $key, id: $id}';
+    return 'ProductRouteArgs{key: $key, id: $id, itemname: $itemname}';
   }
 }

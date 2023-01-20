@@ -82,7 +82,10 @@ class ThirdRowList extends StatelessWidget {
                                               context.router.push(ProductRoute(
                                                   id: firstlistitems[2][index]!
                                                       .id
-                                                      .toString()));
+                                                      .toString(),
+                                                  itemname: firstlistitems[2]
+                                                          [index]!
+                                                      .title!));
                                             },
                                             child: CachedNetworkImage(
                                               fadeInDuration:

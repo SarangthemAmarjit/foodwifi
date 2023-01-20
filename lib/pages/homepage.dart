@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     firstlistitems = data.firstlistitems;
 
     log(firstlistitems.toString());
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 248, 246, 246),
       body: SafeArea(
