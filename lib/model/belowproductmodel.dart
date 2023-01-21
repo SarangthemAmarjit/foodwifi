@@ -111,7 +111,7 @@ class Offer {
     required this.offerPrice,
   });
 
-  final String? offerPc;
+  final dynamic offerPc;
   final String? description;
   final String? offerUpto;
   final double? offerPrice;

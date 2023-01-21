@@ -21,18 +21,22 @@ class BelowProductCubitCubit extends Cubit<BelowProductCubitState> {
           Uri.http('app.myfoodwifi.com', '/api/restaurants/categoryproduct',
               queryParameters),
           headers: baseHeader);
+      log(response.body.toString());
 
       if (response.statusCode == 200) {
         var belowdata = productbelowmodelFromJson(response.body);
 
         log('Successfully get Data');
+        log(response.body.toString());
         emit(BelowProductCubitState(alldata: belowdata!));
         return belowdata;
       } else {
         log('Failed to Getdata.');
       }
       return null;
-    } catch (e) {}
+    } catch (e) {
+      log('product error ${e.toString()}');
+    }
     return null;
   }
 }
