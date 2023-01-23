@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -8,41 +7,41 @@ import 'package:http/http.dart' as http;
 part 'upperproduct_cubit_state.dart';
 
 class UpperproductCubit extends Cubit<UpperproductState> {
-  UpperproductCubit() : super(const UpperproductState()) {
-    getupperproductdata();
-  }
+  UpperproductCubit() : super(const UpperproductState(status: Status.initial));
 
-  Future<Productuppermodel?> getupperproductdata({String? id}) async {
+  bool get isLoading => state.status == Status.loading;
+
+  Future<void> getupperproductdata(String id) async {
+    if (isLoading) {
+      return;
+    }
+    emit(const UpperproductState(status: Status.loading));
     try {
       final queryParameters = {
         'lat': '24.805823',
         'lng': '93.942931',
       };
-      if (id != null) {
-        log('Id: ${id.toString()}');
-        final baseHeader = {'Branchid': "1"};
-        final response = await http.get(
-            Uri.http(
-                'app.myfoodwifi.com', '/api/restaurants/$id', queryParameters),
-            headers: baseHeader);
+      log('Id: ${id.toString()}');
+      final baseHeader = {'Branchid': "1"};
+      final response = await http.get(
+          Uri.http(
+              'app.myfoodwifi.com', '/api/restaurants/$id', queryParameters),
+          headers: baseHeader);
+      log(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        var upperdata = productuppermodelFromJson(response.body);
+        emit(UpperproductState(upperdata: upperdata, status: Status.loaded));
 
-        var data = jsonDecode(response.body) as Map<String, dynamic>;
+        log(' upper ${upperdata!.toJson()}');
 
-        if (response.statusCode == 200) {
-          var upperdata = Productuppermodel.fromJson(data);
-          emit(UpperproductState(upperdata: upperdata));
-
-          log(upperdata.title.toString());
-
-          log('Successfully get Data');
-          return upperdata;
-        } else {
-          log('Failed to Getdata.');
-        }
+        log('Successfully get Upper Data');
+      } else {
+        emit(const UpperproductState(status: Status.error));
+        log('Failed to Getdata.');
       }
     } catch (e) {
       log('upper errror${e.toString()}');
+      emit(const UpperproductState(status: Status.error));
     }
-    return null;
   }
 }

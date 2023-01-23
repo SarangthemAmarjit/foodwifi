@@ -10,6 +10,7 @@ import 'dart:math' as math;
 
 class ThirdRowList extends StatelessWidget {
   final List<List<Item?>> firstlistitems;
+
   const ThirdRowList({super.key, required this.firstlistitems});
 
   @override
@@ -108,56 +109,66 @@ class ThirdRowList extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(2),
-                                                  child: Container(
-                                                    width: 135,
-                                                    height: 24,
-                                                    color: const Color.fromARGB(
-                                                        255, 17, 149, 138),
-                                                    child: Padding(
+                                              firstlistitems[2][index]!
+                                                      .offerDescription!
+                                                      .isEmpty
+                                                  ? const SizedBox()
+                                                  : Padding(
                                                       padding:
                                                           const EdgeInsets.all(
-                                                              2),
-                                                      child: Row(
-                                                        children: [
-                                                          Transform(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            transform: Matrix4
-                                                                .rotationY(
-                                                                    math.pi),
-                                                            child: const FaIcon(
-                                                              FontAwesomeIcons
-                                                                  .tag,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 14,
-                                                            ),
-                                                          ),
-                                                          Padding(
+                                                              10),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(2),
+                                                        child: Container(
+                                                          width: 135,
+                                                          height: 24,
+                                                          color: const Color
+                                                                  .fromARGB(255,
+                                                              17, 149, 138),
+                                                          child: Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                        .only(
-                                                                    left: 5),
-                                                            child: Text(
-                                                              '${firstlistitems[2][index]!.offer!.toString().toLowerCase()} upto ₹${firstlistitems[2][index]!.offerUpto!}',
-                                                              style: GoogleFonts
-                                                                  .kreon(
-                                                                      color: Colors
-                                                                          .white),
+                                                                    .all(2),
+                                                            child: Row(
+                                                              children: [
+                                                                Transform(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  transform: Matrix4
+                                                                      .rotationY(
+                                                                          math.pi),
+                                                                  child:
+                                                                      const FaIcon(
+                                                                    FontAwesomeIcons
+                                                                        .tag,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    size: 14,
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 5),
+                                                                  child: Text(
+                                                                    firstlistitems[2]
+                                                                            [
+                                                                            index]!
+                                                                        .offerDescription!,
+                                                                    style: GoogleFonts.kreon(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
-                                              ),
                                             ],
                                           )
                                         ],

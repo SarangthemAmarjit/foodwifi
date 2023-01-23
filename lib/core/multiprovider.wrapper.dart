@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodwifi/logic/belowproduct/cubit/below_product_cubit_cubit.dart';
 import 'package:foodwifi/logic/fetchdata/cubit/fetchdatabloc_cubit.dart';
+import 'package:foodwifi/logic/review/cubit/review_cubit.dart';
 import 'package:foodwifi/logic/upperproduct/cubit/upperproduct_cubit_cubit.dart';
 
 class MultiproviderWrapper extends StatelessWidget {
@@ -19,6 +20,9 @@ class MultiproviderWrapper extends StatelessWidget {
       ),
       BlocProvider(
         create: (context) => BelowProductCubitCubit(),
+      ),
+      BlocProvider(
+        create: (context) => ReviewCubit(),
       ),
     ], child: child);
   }
