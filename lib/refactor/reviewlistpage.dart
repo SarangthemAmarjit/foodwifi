@@ -1,22 +1,26 @@
 import 'dart:developer';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:foodwifi/model/reviewmodal.dart';
+import 'package:foodwifi/model/allbelowmodel.dart';
+import 'package:foodwifi/router/router.gr.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 
 class ReviewPage extends StatelessWidget {
-  final ReviewModal reviewdata;
+  final String id;
+  final Reviewdata reviewdata;
   const ReviewPage({
     Key? key,
     required this.reviewdata,
+    required this.id,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
         children: [
           Column(
@@ -29,14 +33,19 @@ class ReviewPage extends StatelessWidget {
                     style: GoogleFonts.kreon(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const CircleAvatar(
-                      backgroundColor: Color.fromARGB(255, 203, 201, 201),
-                      radius: 12,
-                      child: Icon(
-                        Icons.arrow_forward_sharp,
-                        size: 17,
-                        color: Colors.black,
-                      ))
+                  InkWell(
+                    onTap: () {
+                      context.router.push(AllreviewRoute(id: id));
+                    },
+                    child: const CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 203, 201, 201),
+                        radius: 12,
+                        child: Icon(
+                          Icons.arrow_forward_sharp,
+                          size: 17,
+                          color: Colors.black,
+                        )),
+                  )
                 ],
               ),
               Padding(
@@ -61,7 +70,7 @@ class ReviewPage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 160,
+                height: 130,
                 child: ListView.builder(
                     physics: const PageScrollPhysics()
                         .applyTo(const BouncingScrollPhysics()),
@@ -94,7 +103,7 @@ class ReviewPage extends StatelessWidget {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 20, left: 15, bottom: 20),
+                                    top: 20, left: 15, bottom: 10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -150,14 +159,19 @@ class ReviewPage extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    reviewdata.review[index].description == null
-                                        ? const SizedBox()
+                                    reviewdata.review[index].description ==
+                                                null ||
+                                            reviewdata.review[index]
+                                                .description!.isEmpty
+                                        ? Container()
                                         : Text(
                                             reviewdata
                                                 .review[index].description!,
                                             style: GoogleFonts.kreon(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 17),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
                                           )
                                   ],
                                 ),

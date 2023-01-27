@@ -1,9 +1,12 @@
 part of 'review_cubit.dart';
 
-class ReviewState extends Equatable {
-  const ReviewState({this.reviewdata});
-  final ReviewModal? reviewdata;
+enum Status3 { initial, loading, loaded, error }
+
+class DetailState extends Equatable {
+  const DetailState({required this.status, this.productdetail});
+  final ProductDetailModel? productdetail;
+  final Status3 status;
 
   @override
-  List<Object?> get props => [reviewdata];
+  List<Object?> get props => [productdetail, status];
 }
