@@ -51,7 +51,6 @@ class BelowProductCubitCubit extends Cubit<BelowProductCubitState> {
         var re = await ServiceApi().getcustomerreview(id);
 
         allbelowdata[0]['reviewdata'] = re;
-        log("New Below$allbelowdata");
 
         var belowdata = productbelowmodelFromJson(response.body);
         var originaldata = productbelowmodelFromJson(response.body);

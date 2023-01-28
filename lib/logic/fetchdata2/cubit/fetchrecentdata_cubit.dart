@@ -12,15 +12,23 @@ class FetchallreviewCubit extends Cubit<FetchallreviewState> {
           isloading: true,
         ));
 
-  Future<void> getdatalist(String id, int pagenumber, int datalimit,
-      bool isMoredata, String? lastdocument) async {
+  Future<void> getdatalist(
+      {String? id,
+      required int pagenumber,
+      required int datalimit,
+      required bool isMoredata,
+      String? lastdocument}) async {
+    log(id.toString());
+
     try {
       if (isMoredata) {
         if (lastdocument != null) {
+          log('Limit not null : $datalimit');
+
           final queryParameters = {
             'id': id,
-            "page": 1 + pagenumber,
-            "limit": 12 + datalimit
+            "page": '1',
+            "limit": '$datalimit'
           };
           final baseHeader = {'Branchid': "1"};
           final response = await http.get(
@@ -31,26 +39,26 @@ class FetchallreviewCubit extends Cubit<FetchallreviewState> {
             var productdeatails = reviewModalFromJson(response.body);
 
             lastdocument = productdeatails.review.last.toString();
-            log('lastdocument${lastdocument.toString()}');
-            log(productdeatails.review.length.toString());
+            log('lastdocument not null${lastdocument.toString()}');
+
             if (productdeatails.review.length < datalimit) {
               log('item is lesss than $datalimit');
               isMoredata = false;
             }
             emit(FetchallreviewState(
                 productdetail: productdeatails, isloading: isMoredata));
-
-            log(' review ${productdeatails.toJson()}');
 
             log('Successfully get Detail Data');
           } else {
             log('Failed to Getdata.');
           }
         } else {
+          log('Limit null : $datalimit');
+
           final queryParameters = {
             'id': id,
-            "page": pagenumber,
-            "limit": datalimit
+            "page": '1',
+            "limit": '$datalimit'
           };
           final baseHeader = {'Branchid': "1"};
           final response = await http.get(
@@ -62,15 +70,13 @@ class FetchallreviewCubit extends Cubit<FetchallreviewState> {
 
             lastdocument = productdeatails.review.last.toString();
             log('lastdocument${lastdocument.toString()}');
-            log(productdeatails.review.length.toString());
+            log('Length${productdeatails.review.length}');
             if (productdeatails.review.length < datalimit) {
               log('item is lesss than $datalimit');
               isMoredata = false;
             }
             emit(FetchallreviewState(
                 productdetail: productdeatails, isloading: isMoredata));
-
-            log(' review ${productdeatails.toJson()}');
 
             log('Successfully get Detail Data');
           } else {

@@ -16,8 +16,8 @@ class ReviewModal {
     required this.review,
   });
 
-  final double rating;
-  final String ratingCount;
+  final double? rating;
+  final String? ratingCount;
   final List<Review> review;
 
   factory ReviewModal.fromJson(Map<String, dynamic> json) => ReviewModal(
@@ -42,8 +42,8 @@ class Review {
     required this.createdDate,
   });
 
-  final String name;
-  final String rating;
+  final String? name;
+  final String? rating;
   final String? description;
   final DateTime createdDate;
 

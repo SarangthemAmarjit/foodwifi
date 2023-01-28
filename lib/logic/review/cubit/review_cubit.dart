@@ -24,13 +24,11 @@ class DetailsCubit extends Cubit<DetailState> {
             '/api/products/$id',
           ),
           headers: baseHeader);
-      log(response.statusCode.toString());
+
       if (response.statusCode == 200) {
         var productdeatails = productdetailFromJson(response.body);
         emit(DetailState(
             productdetail: productdeatails, status: Status3.loaded));
-
-        log(' review ${productdeatails.toJson()}');
 
         log('Successfully get Detail Data');
       } else {

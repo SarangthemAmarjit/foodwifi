@@ -19,7 +19,6 @@ class ServiceApi {
       if (response.statusCode == 200) {
         var reviewdata = reviewModalFromJson(response.body);
         var finaldata = reviewdata.toJson();
-        log('new review ${reviewdata.toJson()}');
 
         log('Successfully get re Data');
         return finaldata;

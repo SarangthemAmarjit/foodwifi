@@ -27,12 +27,10 @@ class UpperproductCubit extends Cubit<UpperproductState> {
           Uri.http(
               'app.myfoodwifi.com', '/api/restaurants/$id', queryParameters),
           headers: baseHeader);
-      log(response.statusCode.toString());
+
       if (response.statusCode == 200) {
         var upperdata = productuppermodelFromJson(response.body);
         emit(UpperproductState(upperdata: upperdata, status: Status.loaded));
-
-        log(' upper ${upperdata!.toJson()}');
 
         log('Successfully get Upper Data');
       } else {

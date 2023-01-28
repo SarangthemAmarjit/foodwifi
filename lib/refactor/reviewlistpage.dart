@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:foodwifi/model/allbelowmodel.dart';
@@ -88,7 +86,7 @@ class ReviewPage extends StatelessWidget {
                       var format = DateFormat("dd MMM, yyyy");
 
                       var datefinal = format.format(datetime);
-                      log(datefinal);
+
                       return Padding(
                         padding: const EdgeInsets.only(
                           right: 20,

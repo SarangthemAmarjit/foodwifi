@@ -38,8 +38,6 @@ class FetchdatablocCubit extends Cubit<FetchdatablocState> {
           return datamap;
         }).toList();
 
-        log(user2.toString());
-
         log('Successfully get Data');
         emit(FetchdatablocState(alldata: users, firstlistitems: user2));
         return users;

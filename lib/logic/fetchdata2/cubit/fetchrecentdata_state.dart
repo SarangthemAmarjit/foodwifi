@@ -11,5 +11,5 @@ class FetchallreviewState extends Equatable {
   final ReviewModal? productdetail;
 
   @override
-  List get props => [productdetail, isloading];
+  List<Object?> get props => [productdetail, isloading];
 }
