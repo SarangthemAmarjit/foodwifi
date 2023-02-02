@@ -4,6 +4,7 @@ import 'package:foodwifi/pages/detailspage.dart';
 import 'package:foodwifi/pages/homepage.dart';
 
 import 'package:foodwifi/pages/productpage.dart';
+import 'package:foodwifi/pages/searchrestuarent.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -17,6 +18,7 @@ import 'package:foodwifi/pages/productpage.dart';
     ),
     AutoRoute(page: ProductDetailPage),
     AutoRoute(page: AllreviewPage),
+    AutoRoute(page: SearchRestuarentPage),
   ],
 )
 class $AppRouter {}

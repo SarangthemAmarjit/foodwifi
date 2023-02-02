@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodwifi/model/model.dart';
 import 'package:foodwifi/refactor/skeleton.dart';
+import 'package:foodwifi/router/router.gr.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForthRowList extends StatelessWidget {
@@ -59,34 +61,41 @@ class ForthRowList extends StatelessWidget {
                           context,
                           index,
                         ) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 84,
-                                child: CachedNetworkImage(
-                                  fadeInDuration: const Duration(seconds: 1),
-                                  imageUrl:
-                                      'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[3][index]!.img!}',
-                                  fit: BoxFit.cover,
-                                  progressIndicatorBuilder:
-                                      (context, url, downloadProgress) =>
-                                          const Skeleton(
-                                    radius: 50,
-                                    height: 75,
+                          return InkWell(
+                            onTap: () {
+                              context.router.push(SearchRestuarentRoute(
+                                itemname: firstlistitems[3][index]!.title!,
+                              ));
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 84,
+                                  child: CachedNetworkImage(
+                                    fadeInDuration: const Duration(seconds: 1),
+                                    imageUrl:
+                                        'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[3][index]!.img!}',
+                                    fit: BoxFit.cover,
+                                    progressIndicatorBuilder:
+                                        (context, url, downloadProgress) =>
+                                            const Skeleton(
+                                      radius: 50,
+                                      height: 75,
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 7),
-                                child: Text(
-                                  firstlistitems[3][index]!.title!,
-                                  style: GoogleFonts.kreon(fontSize: 12),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 7),
+                                  child: Text(
+                                    firstlistitems[3][index]!.title!,
+                                    style: GoogleFonts.kreon(fontSize: 12),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           );
                         }),
                       ),

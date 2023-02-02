@@ -15,7 +15,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routerDelegate: _appRouter.delegate(),
         routeInformationParser: _appRouter.defaultRouteParser(),
-        theme: ThemeData(textTheme: GoogleFonts.kreonTextTheme()),
+        theme: ThemeData(
+            scrollbarTheme: const ScrollbarThemeData(
+              crossAxisMargin: 0,
+            ),
+            textTheme: GoogleFonts.kreonTextTheme(),
+            highlightColor: Colors.white),
         builder: EasyLoading.init(),
         title: 'Foodwifi',
       ),
