@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,24 +91,34 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             style: GoogleFonts.kreon(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                '₹${widget.product.price}',
-                                style: const TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    fontSize: 18),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '₹${widget.product.offer!.offerPrice.toString()}',
-                                style: GoogleFonts.kreon(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                            ],
-                          ),
+                          widget.product.offer!.offerPrice ==
+                                  widget.product.price
+                              ? Text(
+                                  '₹${widget.product.offer!.offerPrice!.toInt().toString()}',
+                                  style: GoogleFonts.kreon(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                )
+                              : Row(
+                                  children: [
+                                    Text(
+                                      '₹${widget.product.price}',
+                                      style: const TextStyle(
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          fontSize: 18),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '₹${widget.product.offer!.offerPrice.toString()}',
+                                      style: GoogleFonts.kreon(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                         ],
                       ),
                     ),
@@ -117,34 +129,39 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              height: 22,
-                              color: const Color.fromARGB(255, 3, 158, 163),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: Row(
-                                  children: [
-                                    const RotatedBox(
-                                      quarterTurns: 1,
-                                      child: FaIcon(
-                                        FontAwesomeIcons.tag,
-                                        color: Colors.white,
-                                        size: 14,
+                            widget.product.offer!.description.toString().isEmpty
+                                ? const SizedBox()
+                                : Container(
+                                    height: 22,
+                                    color:
+                                        const Color.fromARGB(255, 3, 158, 163),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: [
+                                          const RotatedBox(
+                                            quarterTurns: 1,
+                                            child: FaIcon(
+                                              FontAwesomeIcons.tag,
+                                              color: Colors.white,
+                                              size: 14,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 5),
+                                            child: Text(
+                                              widget.product.offer!.description
+                                                  .toString(),
+                                              style: GoogleFonts.kreon(
+                                                  color: Colors.white,
+                                                  fontSize: 11),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5),
-                                      child: Text(
-                                        widget.product.offer!.description
-                                            .toString(),
-                                        style: GoogleFonts.kreon(
-                                            color: Colors.white, fontSize: 11),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                  ),
                             const Text('Starting price')
                           ],
                         ),
@@ -253,6 +270,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   if (ProductDetaildata.variants.length == 1) {
                                     _selectedIndex = 0;
                                   }
+                                  log(ProductDetaildata
+                                      .variants[index].offerPrice!
+                                      .toString());
                                   return Column(
                                     children: [
                                       RadioListTile(
@@ -280,28 +300,41 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 style: GoogleFonts.kreon(
                                                     fontSize: 16),
                                               ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    '₹${ProductDetaildata.variants[index].price}',
-                                                    style: const TextStyle(
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
-                                                        fontSize: 18),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Text(
-                                                    '₹${ProductDetaildata.variants[index].offerPrice.toString()}',
-                                                    style: GoogleFonts.kreon(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 18),
-                                                  ),
-                                                ],
-                                              ),
+                                              ProductDetaildata.variants[index]
+                                                          .offerPrice ==
+                                                      ProductDetaildata
+                                                          .variants[index].price
+                                                  ? Text(
+                                                      '₹${ProductDetaildata.variants[index].offerPrice.toString()}',
+                                                      style: GoogleFonts.kreon(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    )
+                                                  : Row(
+                                                      children: [
+                                                        Text(
+                                                          '₹${ProductDetaildata.variants[index].price}',
+                                                          style: const TextStyle(
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              fontSize: 18),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          '₹${ProductDetaildata.variants[index].offerPrice!.toString()}',
+                                                          style:
+                                                              GoogleFonts.kreon(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 18),
+                                                        ),
+                                                      ],
+                                                    ),
                                             ],
                                           ),
                                         ),

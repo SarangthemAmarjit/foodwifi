@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -14,17 +13,12 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
 
   bool get isLoading => state.status == SearchStatus.loading;
 
-  Future<void> getsearchdata({
+  Future<List<SearchRestuarentModal>?> getsearchdata({
     required String itemname,
     required int page,
     required bool isMoredata,
-    required int datalimit,
   }) async {
-    List allsearchdata = [];
     if (page < 2) {
-      if (isLoading) {
-        return;
-      }
       emit(const SearchRestuarentState(
           searchdata: [], status: SearchStatus.loading, isloading: true));
     }
@@ -50,28 +44,23 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
             headers: baseHeader);
 
         if (response.statusCode == 200) {
-          var data = jsonDecode(response.body) as List;
-          for (var element in data) {
-            allsearchdata.addAll(allsearchdata);
-          }
-          var finaldata = allsearchdata
-              .map((e) => SearchRestuarentModal.fromJson(e))
-              .toList();
+          var allsearchdata = searchRestuarentModalFromJson(response.body);
           log('Successfully get Search Data');
 
-          if (allsearchdata.length < datalimit) {
+          if (allsearchdata.length < 15) {
             log('item is lesss than ${allsearchdata.length}');
             isMoredata = false;
             emit(SearchRestuarentState(
-                searchdata: finaldata,
+                searchdata: allsearchdata,
                 status: SearchStatus.loaded,
                 isloading: false));
           } else {
             emit(SearchRestuarentState(
-                searchdata: finaldata,
+                searchdata: allsearchdata,
                 status: SearchStatus.loaded,
                 isloading: isMoredata));
           }
+          return allsearchdata;
         } else {
           emit(const SearchRestuarentState(
               searchdata: [], status: SearchStatus.error, isloading: false));
@@ -85,6 +74,6 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
           searchdata: [], status: SearchStatus.error, isloading: false));
       log('product error ${e.toString()}');
     }
-    return;
+    return null;
   }
 }

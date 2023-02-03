@@ -13,5 +13,5 @@ class SearchRestuarentState extends Equatable {
   final bool isloading;
 
   @override
-  List<Object> get props => [status, searchdata];
+  List<Object> get props => [searchdata];
 }
