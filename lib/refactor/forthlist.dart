@@ -65,6 +65,7 @@ class ForthRowList extends StatelessWidget {
                             onTap: () {
                               context.router.push(SearchRestuarentRoute(
                                 itemname: firstlistitems[3][index]!.title!,
+                                issearchfoud: false,
                               ));
                             },
                             child: Column(

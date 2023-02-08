@@ -164,7 +164,7 @@ class _ProductListPageState extends State<ProductListPage> {
                                                     width: 10,
                                                   ),
                                                   Text(
-                                                    '₹${widget.allbelowdata[widget.nameindex]!.products[itemindex].offer!.offerPrice.toString()}',
+                                                    '₹${widget.allbelowdata[widget.nameindex]!.products[itemindex].offer!.offerPrice!.toStringAsFixed(2)}',
                                                     style: GoogleFonts.kreon(
                                                         fontWeight:
                                                             FontWeight.bold),
@@ -262,7 +262,7 @@ class _ProductListPageState extends State<ProductListPage> {
                           );
                         },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -274,7 +274,26 @@ class _ProductListPageState extends State<ProductListPage> {
             : ReviewPage(
                 reviewdata: widget.allbelowdata[widget.nameindex]!.reviewdata!,
                 id: widget.id,
+              ),
+        widget.allbelowdata[widget.nameindex]!.categoryName ==
+                widget.allbelowdata.last!.categoryName
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+                height: 70,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                        'Prices on this menu are set directly by the Merchant.'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text('Prices may differ between Delivery and Dine-in'),
+                  ],
+                ),
               )
+            : const SizedBox(),
       ],
     );
   }

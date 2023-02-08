@@ -144,87 +144,94 @@ class VegetableonlyListPage extends StatelessWidget {
                                                             MainAxisAlignment
                                                                 .spaceBetween,
                                                         children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                allvegdatalist[
-                                                                        ind]!
-                                                                    .products[
-                                                                        itemindex]
-                                                                    .price!
-                                                                    .toString(),
-                                                                style: const TextStyle(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .lineThrough),
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Text(
-                                                                  '₹${allvegdatalist[ind]!.products[itemindex].offer!.offerPrice.toString()}'),
-                                                            ],
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 10),
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          2),
-                                                              child: Container(
-                                                                height: 24,
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    17,
-                                                                    149,
-                                                                    138),
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(2),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Transform(
-                                                                        alignment:
-                                                                            Alignment.center,
-                                                                        transform:
-                                                                            Matrix4.rotationY(math.pi),
-                                                                        child:
-                                                                            const FaIcon(
-                                                                          FontAwesomeIcons
-                                                                              .tag,
-                                                                          color:
-                                                                              Colors.white,
-                                                                          size:
-                                                                              14,
-                                                                        ),
-                                                                      ),
-                                                                      Padding(
+                                                          allvegdatalist[ind]!
+                                                                      .products[
+                                                                          itemindex]
+                                                                      .offer!
+                                                                      .offerPrice ==
+                                                                  allvegdatalist[
+                                                                          ind]!
+                                                                      .products[
+                                                                          itemindex]
+                                                                      .price!
+                                                              ? Text(
+                                                                  '₹${allvegdatalist[ind]!.products[itemindex].offer!.offerPrice!.toInt().toString()}')
+                                                              : Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      allvegdatalist[
+                                                                              ind]!
+                                                                          .products[
+                                                                              itemindex]
+                                                                          .price!
+                                                                          .toString(),
+                                                                      style: const TextStyle(
+                                                                          decoration:
+                                                                              TextDecoration.lineThrough),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Text(
+                                                                        '₹${allvegdatalist[ind]!.products[itemindex].offer!.offerPrice.toString()}'),
+                                                                  ],
+                                                                ),
+                                                          allvegdatalist[ind]!
+                                                                  .products[
+                                                                      itemindex]
+                                                                  .offer!
+                                                                  .description
+                                                                  .toString()
+                                                                  .isEmpty
+                                                              ? const SizedBox()
+                                                              : Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 10),
+                                                                  child:
+                                                                      ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(2),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          24,
+                                                                      color: const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          17,
+                                                                          149,
+                                                                          138),
+                                                                      child:
+                                                                          Padding(
                                                                         padding:
-                                                                            const EdgeInsets.only(left: 5),
+                                                                            const EdgeInsets.all(2),
                                                                         child:
-                                                                            Text(
-                                                                          allvegdatalist[ind]!
-                                                                              .products[itemindex]
-                                                                              .offer!
-                                                                              .description
-                                                                              .toString(),
-                                                                          style: GoogleFonts.kreon(
-                                                                              color: Colors.white,
-                                                                              fontSize: 12),
+                                                                            Row(
+                                                                          children: [
+                                                                            Transform(
+                                                                              alignment: Alignment.center,
+                                                                              transform: Matrix4.rotationY(math.pi),
+                                                                              child: const FaIcon(
+                                                                                FontAwesomeIcons.tag,
+                                                                                color: Colors.white,
+                                                                                size: 14,
+                                                                              ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(left: 5),
+                                                                              child: Text(
+                                                                                allvegdatalist[ind]!.products[itemindex].offer!.description.toString(),
+                                                                                style: GoogleFonts.kreon(color: Colors.white, fontSize: 12),
+                                                                              ),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                       ),
-                                                                    ],
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                          ),
                                                         ],
                                                       ),
                                                     )
@@ -259,7 +266,25 @@ class VegetableonlyListPage extends StatelessWidget {
             : ReviewPage(
                 reviewdata: allvegdatalist[ind]!.reviewdata!,
                 id: id,
+              ),
+        allvegdatalist[ind]!.categoryName == allvegdatalist.last!.categoryName
+            ? Container(
+                width: MediaQuery.of(context).size.width,
+                color: Colors.white,
+                height: 70,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                        'Prices on this menu are set directly by the Merchant.'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text('Prices may differ between Delivery and Dine-in'),
+                  ],
+                ),
               )
+            : const SizedBox(),
       ],
     );
   }

@@ -168,7 +168,7 @@ class Review {
     required this.createdDate,
   });
 
-  final String name;
+  final String? name;
   final String rating;
   final String? description;
   final DateTime createdDate;

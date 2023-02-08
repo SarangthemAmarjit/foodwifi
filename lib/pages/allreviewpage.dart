@@ -201,12 +201,16 @@ class _AllreviewPageState extends State<AllreviewPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              allreview.review[index].name!,
-                                              style: GoogleFonts.kreon(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                            ),
+                                            allreview.review[index].name == null
+                                                ? const SizedBox()
+                                                : Text(
+                                                    allreview
+                                                        .review[index].name!,
+                                                    style: GoogleFonts.kreon(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 16),
+                                                  ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                 top: 5,

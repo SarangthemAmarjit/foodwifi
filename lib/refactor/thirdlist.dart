@@ -81,12 +81,15 @@ class ThirdRowList extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               context.router.push(ProductRoute(
-                                                  id: firstlistitems[2][index]!
-                                                      .id
-                                                      .toString(),
-                                                  itemname: firstlistitems[2]
-                                                          [index]!
-                                                      .title!));
+                                                id: firstlistitems[2][index]!
+                                                    .id
+                                                    .toString(),
+                                                itemname: firstlistitems[2]
+                                                        [index]!
+                                                    .title!,
+                                                iscomingfromsearch: false,
+                                                index: 0,
+                                              ));
                                             },
                                             child: CachedNetworkImage(
                                               fadeInDuration:

@@ -3,17 +3,21 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodwifi/model/allbelowmodel.dart';
 import 'package:foodwifi/model/searchmodal.dart';
 import 'package:foodwifi/refactor/skeleton.dart';
 import 'package:foodwifi/router/router.gr.dart';
+import 'package:foodwifi/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../logic/searchrestuarent/cubit/search_restuarent_cubit.dart';
 
 class SearchRestuarentPage extends StatefulWidget {
+  final bool issearchfoud;
   final String itemname;
-  const SearchRestuarentPage({super.key, required this.itemname});
+  const SearchRestuarentPage(
+      {super.key, required this.itemname, required this.issearchfoud});
 
   @override
   State<SearchRestuarentPage> createState() => _SearchRestuarentPageState();
@@ -54,6 +58,7 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
         }
       }
     });
+    log('Search Page :${widget.itemname}');
   }
 
   getdata() async {
@@ -76,43 +81,74 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
     'Halal',
     'Promo'
   ];
+  int indexfinal = 0;
+  ReviewModalModified? catename;
+  Product? product;
+
+  void getindex(int index, int itemindex) async {
+    var allbelowdata =
+        await ServiceApi().getbelowproductdata(allsearchdata[index].id);
+    for (var element in allbelowdata!) {
+      for (var element2 in element.products) {
+        if (allsearchdata[index].items[itemindex].name == element2.name) {
+          setState(() {
+            catename = element;
+            indexfinal = allbelowdata.indexOf(catename!);
+            product = element2;
+          });
+          context.router.push(ProductRoute(
+            id: allsearchdata[index].id,
+            itemname: allsearchdata[index].title,
+            iscomingfromsearch: true,
+            index: indexfinal,
+            product: product!,
+          ));
+          log('new index:${indexfinal.toString()}');
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final searchdata = context.watch<SearchRestuarentCubit>().state;
+
     ismoreloading = searchdata.isloading;
     // allsearchdata = searchdata.searchdata;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           Expanded(
-              flex: 15,
+              flex: widget.issearchfoud ? 5 : 15,
               child: Material(
                 elevation: allsearchdata.isEmpty ? 0 : 5,
                 child: Container(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, top: 40, bottom: 23),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                context.router.pop();
-                              },
-                              child: const Icon(
-                                Icons.arrow_back_ios,
-                                size: 20,
+                      widget.issearchfoud
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, top: 40, bottom: 23),
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      context.router.pop();
+                                    },
+                                    child: const Icon(
+                                      Icons.arrow_back_ios,
+                                      size: 20,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 120,
+                                  ),
+                                  Text(widget.itemname)
+                                ],
                               ),
                             ),
-                            const SizedBox(
-                              width: 120,
-                            ),
-                            Text(widget.itemname)
-                          ],
-                        ),
-                      ),
                       Expanded(
                         child: Container(
                           child: allsearchdata.isEmpty
@@ -237,9 +273,12 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                         InkWell(
                                           onTap: () {
                                             context.router.push(ProductRoute(
-                                                id: allsearchdata[index].id,
-                                                itemname: allsearchdata[index]
-                                                    .title));
+                                              id: allsearchdata[index].id,
+                                              itemname:
+                                                  allsearchdata[index].title,
+                                              iscomingfromsearch: false,
+                                              index: 0,
+                                            ));
                                           },
                                           child: SizedBox(
                                             height: 90,
@@ -414,33 +453,40 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                                       '₹${allsearchdata[index].items[itemindex].price.toString()}')
                                                 ],
                                               ),
-                                              SizedBox(
-                                                height: 50,
-                                                width: 50,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: allsearchdata[index]
-                                                              .items[itemindex]
-                                                              .image ==
-                                                          null
-                                                      ? SizedBox(
-                                                          height: 50,
-                                                          width: 50,
-                                                          child: ClipOval(
-                                                            child: Image.asset(
-                                                                'assets/images/foodwifi.png',
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                                colorBlendMode:
-                                                                    BlendMode
-                                                                        .modulate),
-                                                          ),
-                                                        )
-                                                      : Image.network(
-                                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${allsearchdata[index].items[itemindex].image}'),
+                                              InkWell(
+                                                onTap: () {
+                                                  getindex(index, itemindex);
+                                                },
+                                                child: SizedBox(
+                                                  height: 50,
+                                                  width: 50,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: allsearchdata[index]
+                                                                .items[
+                                                                    itemindex]
+                                                                .image ==
+                                                            null
+                                                        ? SizedBox(
+                                                            height: 50,
+                                                            width: 50,
+                                                            child: ClipOval(
+                                                              child: Image.asset(
+                                                                  'assets/images/foodwifi.png',
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.2),
+                                                                  colorBlendMode:
+                                                                      BlendMode
+                                                                          .modulate),
+                                                            ),
+                                                          )
+                                                        : Image.network(
+                                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${allsearchdata[index].items[itemindex].image}'),
+                                                  ),
                                                 ),
                                               )
                                             ],

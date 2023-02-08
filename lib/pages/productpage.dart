@@ -13,18 +13,26 @@ import 'package:foodwifi/model/belowproductmodel.dart';
 import 'package:foodwifi/model/upperproductmodel.dart';
 import 'package:foodwifi/refactor/productlist.dart';
 import 'package:foodwifi/refactor/vegonlylist.dart';
+import 'package:foodwifi/router/router.gr.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 class ProductPage extends StatefulWidget {
+  final Product? product;
+
+  final int index;
+  final bool iscomingfromsearch;
   final String id;
   final String itemname;
   const ProductPage({
     super.key,
     required this.id,
     required this.itemname,
+    required this.iscomingfromsearch,
+    required this.index,
+    this.product,
   });
 
   @override
@@ -36,7 +44,7 @@ class _ProductPageState extends State<ProductPage> {
   ScrollPhysics singlechildscroll = const BouncingScrollPhysics();
   ScrollPhysics listviewscroll = const BouncingScrollPhysics();
 
-  ScrollController controller = ScrollController();
+  ScrollController? controller;
   SheetController? sheetcontroller = SheetController();
   DraggableScrollableController dragController =
       DraggableScrollableController();
@@ -45,6 +53,7 @@ class _ProductPageState extends State<ProductPage> {
   bool showappbar = false;
   final double _opacity = 0;
   String itemname = '';
+  bool showcontainer = false;
 
   ItemScrollController? itemScrollController = ItemScrollController();
   ItemPositionsListener? itemPositionsListener;
@@ -59,11 +68,33 @@ class _ProductPageState extends State<ProductPage> {
     context.read<BelowProductCubitCubit>().getbelowproductdata(widget.id);
 
     itemPositionsListener = ItemPositionsListener.create();
+    controller = ScrollController();
+    if (widget.iscomingfromsearch) {
+      Future.delayed(const Duration(seconds: 1), () {
+        controller!
+            .animateTo(
+          controller!.position.maxScrollExtent / 1.11,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 600),
+        )
+            .whenComplete(() {
+          setState(() {
+            showappbar = true;
+          });
+          log('index  :${widget.index}');
+          scrollTo(widget.index);
+        }).whenComplete(() {
+          Future.delayed(const Duration(milliseconds: 1200), () {
+            context.router.push(ProductDetailRoute(product: widget.product!));
+          });
+        });
+      });
+    }
 
-    controller.addListener(() {
+    controller!.addListener(() {
       if (direction2 == ScrollDirection.reverse) {
         log('down');
-        if (controller.hasClients && controller.offset > 555) {
+        if (controller!.hasClients && controller!.offset > 555) {
           setState(() {
             showappbar = true;
           });
@@ -73,12 +104,13 @@ class _ProductPageState extends State<ProductPage> {
           });
         }
       } else if (direction2 == ScrollDirection.forward) {
-        if (controller.hasClients && controller.offset < 555) {
+        if (controller!.hasClients && controller!.offset < 555) {
           setState(() {
             showappbar = false;
           });
         }
       }
+      log(controller!.offset.toString());
     });
   }
 
@@ -88,7 +120,7 @@ class _ProductPageState extends State<ProductPage> {
       index: index,
       duration: const Duration(milliseconds: 600),
       curve: Curves.easeInOutCubic,
-      alignment: 0.12);
+      alignment: widget.iscomingfromsearch ? 0.05 : 0.12);
 
   bool isSwitched = false;
 
@@ -104,6 +136,12 @@ class _ProductPageState extends State<ProductPage> {
       });
       print('Switch Button is OFF');
     }
+  }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
   }
 
   @override
@@ -444,9 +482,6 @@ class _ProductPageState extends State<ProductPage> {
                                       ? Column(
                                           children: [
                                             SizedBox(
-                                              height: MediaQuery.of(context)
-                                                  .size
-                                                  .height,
                                               child: ListView.builder(
                                                   physics: showappbar
                                                       ? const BouncingScrollPhysics()
@@ -533,7 +568,7 @@ class _ProductPageState extends State<ProductPage> {
                                 ],
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

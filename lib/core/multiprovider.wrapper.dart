@@ -5,6 +5,7 @@ import 'package:foodwifi/logic/fetchdata/cubit/fetchdatabloc_cubit.dart';
 import 'package:foodwifi/logic/fetchdata2/cubit/allreviewfetchrecentdata_cubit.dart';
 import 'package:foodwifi/logic/review/cubit/review_cubit.dart';
 import 'package:foodwifi/logic/searchrestuarent/cubit/search_restuarent_cubit.dart';
+import 'package:foodwifi/logic/topsearch/cubit/top_search_cubit.dart';
 import 'package:foodwifi/logic/upperproduct/cubit/upperproduct_cubit_cubit.dart';
 
 class MultiproviderWrapper extends StatelessWidget {
@@ -31,6 +32,9 @@ class MultiproviderWrapper extends StatelessWidget {
       ),
       BlocProvider(
         create: (context) => SearchRestuarentCubit(),
+      ),
+      BlocProvider(
+        create: (context) => TopSearchCubit(),
       ),
     ], child: child);
   }

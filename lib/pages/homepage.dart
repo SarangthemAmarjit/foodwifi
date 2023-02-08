@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:foodwifi/refactor/secondlist.dart';
 import 'package:foodwifi/refactor/sevenlist.dart';
 import 'package:foodwifi/refactor/sixlist.dart';
 import 'package:foodwifi/refactor/thirdlist.dart';
+import 'package:foodwifi/router/router.gr.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,6 +34,17 @@ class _HomePageState extends State<HomePage> {
   final bool _snap = false;
   final bool _floating = false;
 
+  String anitext = '';
+
+  List<String> allnames = [
+    'Momo',
+    'Chow',
+    'Pizza',
+    'Burger',
+    'Biryani',
+    'Donut'
+  ];
+
   @override
   Widget build(BuildContext context) {
     final data = context.watch<FetchdatablocCubit>().state;
@@ -42,7 +55,6 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color.fromARGB(255, 248, 246, 246),
       body: SafeArea(
         child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
           slivers: <Widget>[
             SliverToBoxAdapter(
@@ -168,40 +180,45 @@ class _HomePageState extends State<HomePage> {
                                             const EdgeInsets.only(left: 20),
                                         child: Center(
                                           child: AnimatedTextKit(
+                                            onNext: (p0, p1) {
+                                              setState(() {
+                                                anitext = allnames[p0];
+                                              });
+                                            },
                                             displayFullTextOnTap: true,
                                             repeatForever: true,
                                             animatedTexts: [
-                                              TyperAnimatedText('Momo',
+                                              TyperAnimatedText(anitext,
                                                   speed: const Duration(
                                                       milliseconds: 110),
                                                   textStyle: GoogleFonts.kreon(
                                                     fontSize: 15,
                                                   )),
-                                              TyperAnimatedText('Pizza',
+                                              TyperAnimatedText(anitext,
                                                   speed: const Duration(
                                                       milliseconds: 110),
                                                   textStyle: GoogleFonts.kreon(
                                                     fontSize: 15,
                                                   )),
-                                              TyperAnimatedText('Birayani',
+                                              TyperAnimatedText(anitext,
                                                   speed: const Duration(
                                                       milliseconds: 110),
                                                   textStyle: GoogleFonts.kreon(
                                                     fontSize: 15,
                                                   )),
-                                              TyperAnimatedText('Chou',
+                                              TyperAnimatedText(anitext,
                                                   speed: const Duration(
                                                       milliseconds: 110),
                                                   textStyle: GoogleFonts.kreon(
                                                     fontSize: 15,
                                                   )),
-                                              TyperAnimatedText('Donut',
+                                              TyperAnimatedText(anitext,
                                                   speed: const Duration(
                                                       milliseconds: 110),
                                                   textStyle: GoogleFonts.kreon(
                                                     fontSize: 15,
                                                   )),
-                                              TyperAnimatedText('Burger',
+                                              TyperAnimatedText(anitext,
                                                   speed: const Duration(
                                                       milliseconds: 110),
                                                   textStyle: GoogleFonts.kreon(
@@ -214,6 +231,17 @@ class _HomePageState extends State<HomePage> {
                                 Flexible(
                                   child: Container(
                                     child: TextFormField(
+                                      readOnly: true,
+                                      onTap: () {
+                                        // FocusScopeNode currentFocus =
+                                        //     FocusScope.of(context);
+
+                                        // currentFocus.unfocus();
+                                        var ind = allnames.indexOf(anitext);
+                                        context.router.push(TopsearchRoute(
+                                            searchname: allnames[
+                                                ind >= 1 ? ind - 1 : 0]));
+                                      },
                                       decoration: InputDecoration.collapsed(
                                           hintText: scrollvalue > 0
                                               ? "What are you craving?"
