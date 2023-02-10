@@ -64,8 +64,14 @@ class ForthRowList extends StatelessWidget {
                           return InkWell(
                             onTap: () {
                               context.router.push(SearchRestuarentRoute(
-                                itemname: firstlistitems[3][index]!.title!,
+                                itemname:
+                                    firstlistitems[3][index]!.keyword == null
+                                        ? ''
+                                        : firstlistitems[3][index]!.keyword!,
                                 issearchfoud: false,
+                                cuisinesId: '',
+                                storetypeid: '',
+                                checkname: '',
                               ));
                             },
                             child: Column(

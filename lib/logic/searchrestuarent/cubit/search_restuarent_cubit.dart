@@ -9,18 +9,25 @@ part 'search_restuarent_state.dart';
 class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
   SearchRestuarentCubit()
       : super(const SearchRestuarentState(
-            searchdata: [], status: SearchStatus.initial, isloading: true));
+            searchdata: [],
+            status: SearchStatus.initial,
+            isloading: true,
+            isempty: false));
 
   bool get isLoading => state.status == SearchStatus.loading;
 
-  Future<List<SearchRestuarentModal>?> getsearchdata({
-    required String itemname,
-    required int page,
-    required bool isMoredata,
-  }) async {
+  Future<List<SearchRestuarentModal>?> getsearchdata(
+      {required String itemname,
+      required int page,
+      required bool isMoredata,
+      String? cuisinesid,
+      String? Storetypeid}) async {
     if (page < 2) {
       emit(const SearchRestuarentState(
-          searchdata: [], status: SearchStatus.loading, isloading: true));
+          searchdata: [],
+          status: SearchStatus.loading,
+          isloading: true,
+          isempty: false));
     }
 
     try {
@@ -31,8 +38,8 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
           'lat': '24.805823',
           'lng': '93.942931',
           'sort_by': '',
-          'cuisines': '',
-          'store_type_id': '',
+          'cuisines': cuisinesid,
+          'store_type_id': Storetypeid,
           'halal': '',
           'free_delivery': '',
           'promo': ''
@@ -50,20 +57,33 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
           if (allsearchdata.length < 15) {
             log('item is lesss than ${allsearchdata.length}');
             isMoredata = false;
-            emit(SearchRestuarentState(
-                searchdata: allsearchdata,
-                status: SearchStatus.loaded,
-                isloading: false));
+            if (allsearchdata.isEmpty) {
+              emit(SearchRestuarentState(
+                  searchdata: allsearchdata,
+                  status: SearchStatus.loaded,
+                  isloading: false,
+                  isempty: true));
+            } else {
+              emit(SearchRestuarentState(
+                  searchdata: allsearchdata,
+                  status: SearchStatus.loaded,
+                  isloading: false,
+                  isempty: false));
+            }
           } else {
             emit(SearchRestuarentState(
                 searchdata: allsearchdata,
                 status: SearchStatus.loaded,
-                isloading: isMoredata));
+                isloading: isMoredata,
+                isempty: false));
           }
           return allsearchdata;
         } else {
           emit(const SearchRestuarentState(
-              searchdata: [], status: SearchStatus.error, isloading: false));
+              searchdata: [],
+              status: SearchStatus.error,
+              isloading: false,
+              isempty: false));
           log('Failed to Getdata.');
         }
       } else {
@@ -71,7 +91,10 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
       }
     } catch (e) {
       emit(const SearchRestuarentState(
-          searchdata: [], status: SearchStatus.error, isloading: false));
+          searchdata: [],
+          status: SearchStatus.error,
+          isloading: false,
+          isempty: false));
       log('product error ${e.toString()}');
     }
     return null;

@@ -4,12 +4,11 @@ import 'package:foodwifi/refactor/skeleton.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TopbelowPage extends StatelessWidget {
+  final TopSearchModal? finaltopdata;
   const TopbelowPage({
     super.key,
     required this.finaltopdata,
   });
-
-  final TopSearchModal? finaltopdata;
 
   @override
   Widget build(BuildContext context) {
@@ -102,14 +101,17 @@ class TopbelowPage extends StatelessWidget {
                                   shrinkWrap: true,
                                   itemCount: finaltopdata!.cuisines.length,
                                   itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 20),
-                                      child: Text(
-                                          finaltopdata!
-                                              .cuisines[index].cuisineName,
-                                          style:
-                                              GoogleFonts.kreon(fontSize: 20)),
+                                    return InkWell(
+                                      onTap: () {},
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20),
+                                        child: Text(
+                                            finaltopdata!
+                                                .cuisines[index].cuisineName,
+                                            style: GoogleFonts.kreon(
+                                                fontSize: 20)),
+                                      ),
                                     );
                                   }),
                             ],

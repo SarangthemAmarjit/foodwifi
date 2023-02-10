@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -238,9 +240,11 @@ class _HomePageState extends State<HomePage> {
 
                                         // currentFocus.unfocus();
                                         var ind = allnames.indexOf(anitext);
+                                        log('index : $ind');
+
                                         context.router.push(TopsearchRoute(
                                             searchname: allnames[
-                                                ind >= 1 ? ind - 1 : 0]));
+                                                ind >= 1 ? ind - 1 : 5]));
                                       },
                                       decoration: InputDecoration.collapsed(
                                           hintText: scrollvalue > 0

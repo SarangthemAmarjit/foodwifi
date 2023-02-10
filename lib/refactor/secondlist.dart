@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodwifi/model/model.dart';
 import 'package:foodwifi/refactor/skeleton.dart';
+import 'package:foodwifi/router/router.gr.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SecondRowList extends StatelessWidget {
@@ -38,39 +40,58 @@ class SecondRowList extends StatelessWidget {
                           context,
                           index,
                         ) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 24),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: SizedBox(
-                                    width: 75,
-                                    child: CachedNetworkImage(
-                                      fadeInDuration:
-                                          const Duration(seconds: 1),
-                                      imageUrl:
-                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[1][index]!.img!}',
-                                      fit: BoxFit.cover,
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) =>
-                                              const Skeleton(
-                                        height: 75,
+                          return InkWell(
+                            onTap: () {
+                              context.router.push(SearchRestuarentRoute(
+                                itemname:
+                                    firstlistitems[1][index]!.keyword == null
+                                        ? ''
+                                        : firstlistitems[1][index]!.keyword!,
+                                issearchfoud: false,
+                                cuisinesId: '',
+                                storetypeid: '',
+                                checkname: firstlistitems[1][index]!.keyword ==
+                                            'Grocery' ||
+                                        firstlistitems[1][index]!.keyword ==
+                                            'Fresh meat'
+                                    ? 'Store types'
+                                    : '',
+                              ));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10, left: 24),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: SizedBox(
+                                      width: 75,
+                                      child: CachedNetworkImage(
+                                        fadeInDuration:
+                                            const Duration(seconds: 1),
+                                        imageUrl:
+                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[1][index]!.img!}',
+                                        fit: BoxFit.cover,
+                                        progressIndicatorBuilder:
+                                            (context, url, downloadProgress) =>
+                                                const Skeleton(
+                                          height: 75,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 7),
-                                  child: Text(
-                                    firstlistitems[1][index]!.title!,
-                                    style: GoogleFonts.kreon(fontSize: 12),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 7),
+                                    child: Text(
+                                      firstlistitems[1][index]!.title!,
+                                      style: GoogleFonts.kreon(fontSize: 12),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         }),

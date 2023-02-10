@@ -151,10 +151,9 @@ class _ProductPageState extends State<ProductPage> {
 
     Productuppermodel? allupperdata = allproductupperdata.upperdata;
 
-    List<Productbelowmodel?>? allbelowdata = allproductbelowdata.alldata;
     List<ReviewModalModified?>? allvegdatalist = allproductbelowdata.vegdata;
-    List<Productbelowmodel?>? allbelowdataoneitem = allproductbelowdata.oneitem;
-    List<ReviewModalModified?>? newallbelowdataoneitem =
+
+    List<ReviewModalModified?>? newallbelowdata =
         allproductbelowdata.allbelowitems;
     List<Productbelowmodel?>? originalbelowdata =
         allproductbelowdata.orialldata;
@@ -549,13 +548,12 @@ class _ProductPageState extends State<ProductPage> {
                                                   padding: EdgeInsets.zero,
                                                   shrinkWrap: true,
                                                   itemCount:
-                                                      newallbelowdataoneitem
-                                                          .length,
+                                                      newallbelowdata.length,
                                                   itemBuilder:
                                                       (context, index) {
                                                     return ProductListPage(
                                                       allbelowdata:
-                                                          newallbelowdataoneitem,
+                                                          newallbelowdata,
                                                       nameindex: index,
                                                       id: widget.id,
                                                     );
@@ -676,9 +674,8 @@ class _ProductPageState extends State<ProductPage> {
                                                       physics:
                                                           const BouncingScrollPhysics(),
                                                       controller: controller,
-                                                      itemCount:
-                                                          newallbelowdataoneitem
-                                                              .length,
+                                                      itemCount: newallbelowdata
+                                                          .length,
                                                       padding: EdgeInsets.zero,
                                                       itemBuilder:
                                                           (BuildContext context,
@@ -687,7 +684,7 @@ class _ProductPageState extends State<ProductPage> {
                                                           onTap: () {
                                                             setState(() {
                                                               itemname =
-                                                                  newallbelowdataoneitem[
+                                                                  newallbelowdata[
                                                                           index]!
                                                                       .categoryName;
                                                             });
@@ -755,9 +752,8 @@ class _ProductPageState extends State<ProductPage> {
                                           }).index;
                                           log('min :$min');
 
-                                          itemname =
-                                              newallbelowdataoneitem[min!]!
-                                                  .categoryName;
+                                          itemname = newallbelowdata[min!]!
+                                              .categoryName;
                                         }
                                         return Container(
                                           height: 30,

@@ -173,7 +173,7 @@ class VegetableonlyListPage extends StatelessWidget {
                                                                       width: 10,
                                                                     ),
                                                                     Text(
-                                                                        '₹${allvegdatalist[ind]!.products[itemindex].offer!.offerPrice.toString()}'),
+                                                                        '₹${allvegdatalist[ind]!.products[itemindex].offer!.offerPrice!.toStringAsFixed(2)}'),
                                                                   ],
                                                                 ),
                                                           allvegdatalist[ind]!
