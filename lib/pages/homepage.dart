@@ -244,7 +244,15 @@ class _HomePageState extends State<HomePage> {
 
                                         context.router.push(TopsearchRoute(
                                             searchname: allnames[
-                                                ind >= 1 ? ind - 1 : 5]));
+                                                ind >= 1 ? ind - 1 : 5],
+                                            checkname: '',
+                                            cuisinesId: '',
+                                            iscomingfromsort: false,
+                                            issearchfoud: false,
+                                            itemname: '',
+                                            sortby: '',
+                                            storetypeid: '',
+                                            isreset: false));
                                       },
                                       decoration: InputDecoration.collapsed(
                                           hintText: scrollvalue > 0

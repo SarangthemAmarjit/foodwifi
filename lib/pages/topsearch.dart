@@ -14,7 +14,26 @@ import 'package:google_fonts/google_fonts.dart';
 
 class TopsearchPage extends StatefulWidget {
   late String searchname;
-  TopsearchPage({super.key, required this.searchname});
+  final bool issearchfoud;
+  final String itemname;
+  final String cuisinesId;
+  final String storetypeid;
+  final String checkname;
+  final String? sortby;
+  final bool iscomingfromsort;
+  final bool isreset;
+
+  TopsearchPage(
+      {super.key,
+      required this.searchname,
+      required this.issearchfoud,
+      required this.itemname,
+      required this.cuisinesId,
+      required this.storetypeid,
+      required this.checkname,
+      this.sortby,
+      required this.iscomingfromsort,
+      required this.isreset});
 
   @override
   State<TopsearchPage> createState() => _TopsearchPageState();
@@ -26,10 +45,12 @@ class _TopsearchPageState extends State<TopsearchPage> {
   bool? isitemfound;
   int itemlength = 0;
   bool isvisible = true;
+  bool? issortbypressed;
   bool isitemfound2 = false;
   String cuisindata = '';
   String storetypeid = '';
   String checkname = '';
+  String sortby = '';
 
   final _formKey = GlobalKey<FormState>();
   TopSearchModal? finaltopdata;
@@ -39,10 +60,24 @@ class _TopsearchPageState extends State<TopsearchPage> {
     super.initState();
     controller = TextEditingController();
     isitemfound = false;
+    if (widget.iscomingfromsort) {
+      setState(() {
+        controller!.text = widget.itemname;
+        cuisindata = widget.cuisinesId;
+        storetypeid = widget.storetypeid;
+        checkname = widget.checkname;
+        sortby = widget.sortby!;
+        isitemfound = widget.iscomingfromsort;
+        isitemfound2 = true;
+        issortbypressed = true;
+      });
+    } else {
+      setState(() {
+        controller!.text = widget.searchname;
+        issortbypressed = false;
+      });
+    }
 
-    setState(() {
-      controller!.text = widget.searchname;
-    });
     context.read<TopSearchCubit>().gettopsearchdata();
   }
 
@@ -91,7 +126,7 @@ class _TopsearchPageState extends State<TopsearchPage> {
                             padding: const EdgeInsets.only(right: 20),
                             child: InkWell(
                               onTap: () {
-                                context.router.pop();
+                                context.router.replaceNamed('/home');
                               },
                               child: const Icon(
                                 Icons.arrow_back_ios_new,
@@ -159,7 +194,9 @@ class _TopsearchPageState extends State<TopsearchPage> {
                                               isitemfound = isitemfound2;
                                             });
                                           },
-                                          autofocus: true,
+                                          autofocus: widget.iscomingfromsort
+                                              ? false
+                                              : true,
                                           controller: controller,
                                           decoration:
                                               const InputDecoration.collapsed(
@@ -202,6 +239,9 @@ class _TopsearchPageState extends State<TopsearchPage> {
                           cuisinesId: cuisindata,
                           storetypeid: storetypeid,
                           checkname: checkname,
+                          sortby: sortby,
+                          issortbypress: issortbypressed!,
+                          isreset: widget.isreset,
                         )
                       : Visibility(
                           replacement: SearchRestuarentPage(
@@ -210,6 +250,9 @@ class _TopsearchPageState extends State<TopsearchPage> {
                             cuisinesId: cuisindata,
                             storetypeid: storetypeid,
                             checkname: checkname,
+                            sortby: sortby,
+                            issortbypress: issortbypressed!,
+                            isreset: widget.isreset,
                           ),
                           visible: isvisible,
                           child: Container(

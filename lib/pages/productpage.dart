@@ -645,7 +645,7 @@ class _ProductPageState extends State<ProductPage> {
                                         initHeight: 0.5,
                                         maxHeight: 0.85,
                                         context: context,
-                                        bottomSheetColor: Colors.white,
+                                        bottomSheetColor: Colors.transparent,
                                         builder: (context, controller, offset) {
                                           log('Scrollcntroller :$offset');
                                           return Padding(

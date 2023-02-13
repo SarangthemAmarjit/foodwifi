@@ -72,6 +72,9 @@ class ForthRowList extends StatelessWidget {
                                 cuisinesId: '',
                                 storetypeid: '',
                                 checkname: '',
+                                sortby: '',
+                                issortbypress: false,
+                                isreset: false,
                               ));
                             },
                             child: Column(

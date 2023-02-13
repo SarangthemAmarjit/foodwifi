@@ -20,8 +20,11 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
       {required String itemname,
       required int page,
       required bool isMoredata,
+      required bool iscomigfromcheckbox,
       String? cuisinesid,
-      String? Storetypeid}) async {
+      String? allcuisinese,
+      String? Storetypeid,
+      String? soryby}) async {
     if (page < 2) {
       emit(const SearchRestuarentState(
           searchdata: [],
@@ -31,14 +34,17 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
     }
 
     try {
+      log('Sort by :$soryby');
+      log('cuisine ID :$cuisinesid');
+      log('Store ID :$Storetypeid');
       if (isMoredata) {
         final queryParameters = {
           '_search': itemname,
           'page': page.toString(),
           'lat': '24.805823',
           'lng': '93.942931',
-          'sort_by': '',
-          'cuisines': cuisinesid,
+          'sort_by': soryby,
+          'cuisines': iscomigfromcheckbox ? allcuisinese : cuisinesid,
           'store_type_id': Storetypeid,
           'halal': '',
           'free_delivery': '',

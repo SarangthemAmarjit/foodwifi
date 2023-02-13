@@ -56,6 +56,9 @@ class SecondRowList extends StatelessWidget {
                                             'Fresh meat'
                                     ? 'Store types'
                                     : '',
+                                sortby: '',
+                                issortbypress: false,
+                                isreset: false,
                               ));
                             },
                             child: Padding(
