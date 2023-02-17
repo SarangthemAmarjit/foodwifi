@@ -19,7 +19,7 @@ class ForthRowList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: SizedBox(
-        height: 350,
+        height: 400,
         child: Column(
           children: [
             Container(
@@ -33,7 +33,7 @@ class ForthRowList extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 3),
                   child: Text(
-                    'Choose From cuisines',
+                    'Imphal\'s Most Favorites',
                     style: GoogleFonts.kreon(fontSize: 20),
                   ),
                 ),
@@ -49,58 +49,57 @@ class ForthRowList extends StatelessWidget {
                         height: 350,
                       )
                     : GridView.builder(
+                        controller: PageController(viewportFraction: 0.4),
+                        padding: const EdgeInsets.only(left: 10),
                         scrollDirection: Axis.horizontal,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 1 / 0.71,
+                          childAspectRatio: 1 / 0.92,
                           crossAxisCount: 2,
                         ),
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: firstlistitems[3].length,
+                        physics: const PageScrollPhysics()
+                            .applyTo(const BouncingScrollPhysics()),
+                        itemCount: firstlistitems[2].length,
                         itemBuilder: ((
                           context,
                           index,
                         ) {
                           return InkWell(
                             onTap: () {
-                              context.router.push(SearchRestuarentRoute(
-                                itemname:
-                                    firstlistitems[3][index]!.keyword == null
-                                        ? ''
-                                        : firstlistitems[3][index]!.keyword!,
-                                issearchfoud: false,
-                                cuisinesId: '',
-                                storetypeid: '',
-                                checkname: '',
-                                sortby: '',
-                                issortbypress: false,
-                                isreset: false,
+                              context.router.push(ProductRoute(
+                                id: firstlistitems[2][index]!.id.toString(),
+                                itemname: firstlistitems[2][index]!.title!,
+                                iscomingfromsearch: false,
+                                index: 0,
                               ));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  width: 84,
-                                  child: CachedNetworkImage(
-                                    fadeInDuration: const Duration(seconds: 1),
-                                    imageUrl:
-                                        'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[3][index]!.img!}',
-                                    fit: BoxFit.cover,
-                                    progressIndicatorBuilder:
-                                        (context, url, downloadProgress) =>
-                                            const Skeleton(
-                                      radius: 50,
-                                      height: 75,
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: SizedBox(
+                                    width: 135,
+                                    child: CachedNetworkImage(
+                                      fadeInDuration:
+                                          const Duration(seconds: 1),
+                                      imageUrl:
+                                          'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[2][index]!.img!}',
+                                      fit: BoxFit.cover,
+                                      progressIndicatorBuilder:
+                                          (context, url, downloadProgress) =>
+                                              const Skeleton(
+                                        height: 75,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
                                     ),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 7),
                                   child: Text(
-                                    firstlistitems[3][index]!.title!,
+                                    firstlistitems[2][index]!.title!,
                                     style: GoogleFonts.kreon(fontSize: 12),
                                   ),
                                 ),

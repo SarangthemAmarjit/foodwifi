@@ -57,7 +57,7 @@ class ThirdRowList extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         physics: const PageScrollPhysics()
                             .applyTo(const BouncingScrollPhysics()),
-                        itemCount: firstlistitems[2].length,
+                        itemCount: firstlistitems[1].length,
                         itemBuilder: ((
                           context,
                           index,
@@ -81,10 +81,10 @@ class ThirdRowList extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               context.router.push(ProductRoute(
-                                                id: firstlistitems[2][index]!
+                                                id: firstlistitems[1][index]!
                                                     .id
                                                     .toString(),
-                                                itemname: firstlistitems[2]
+                                                itemname: firstlistitems[1]
                                                         [index]!
                                                     .title!,
                                                 iscomingfromsearch: false,
@@ -95,7 +95,7 @@ class ThirdRowList extends StatelessWidget {
                                               fadeInDuration:
                                                   const Duration(seconds: 1),
                                               imageUrl:
-                                                  'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[2][index]!.img!}',
+                                                  'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[1][index]!.img!}',
                                               fit: BoxFit.cover,
                                               progressIndicatorBuilder:
                                                   (context, url,
@@ -112,7 +112,7 @@ class ThirdRowList extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              firstlistitems[2][index]!
+                                              firstlistitems[1][index]!
                                                       .offerDescription!
                                                       .isEmpty
                                                   ? const SizedBox()
@@ -157,7 +157,7 @@ class ThirdRowList extends StatelessWidget {
                                                                           .only(
                                                                       left: 5),
                                                                   child: Text(
-                                                                    firstlistitems[2]
+                                                                    firstlistitems[1]
                                                                             [
                                                                             index]!
                                                                         .offerDescription!,
@@ -180,14 +180,14 @@ class ThirdRowList extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 7),
                                   child: Text(
-                                    firstlistitems[2][index]!.title!,
+                                    firstlistitems[1][index]!.title!,
                                     style: GoogleFonts.kreon(fontSize: 12),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 5),
                                   child: Text(
-                                    firstlistitems[2][index]!.description!,
+                                    firstlistitems[1][index]!.description!,
                                     style: GoogleFonts.kreon(
                                         fontSize: 12,
                                         color: const Color.fromARGB(
@@ -205,7 +205,7 @@ class ThirdRowList extends StatelessWidget {
                                             Color.fromARGB(255, 220, 204, 52),
                                       ),
                                       Text(
-                                        firstlistitems[2][index]!.rating!,
+                                        firstlistitems[1][index]!.rating!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(
@@ -220,7 +220,7 @@ class ThirdRowList extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        firstlistitems[2][index]!.time!,
+                                        firstlistitems[1][index]!.time!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(
@@ -235,7 +235,7 @@ class ThirdRowList extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        firstlistitems[2][index]!.distance!,
+                                        firstlistitems[1][index]!.distance!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(

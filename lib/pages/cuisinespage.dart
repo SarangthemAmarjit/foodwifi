@@ -11,17 +11,31 @@ import 'package:google_fonts/google_fonts.dart';
 class CuisinesPage extends StatefulWidget {
   final String title;
   final String itemname;
-  final String checkname;
+  final List cuisinesitems;
   final String cuisinesid;
   final String storetypeid;
+  final String sortbyname;
+  final String cuisinesname;
+  final String storetypename;
+  final bool freedeliveryname;
+  final bool halalname;
+  final bool promoname;
+  final Map cuisinesidwithname;
 
   const CuisinesPage({
     super.key,
     required this.title,
     required this.itemname,
-    required this.checkname,
     required this.cuisinesid,
     required this.storetypeid,
+    required this.sortbyname,
+    required this.cuisinesname,
+    required this.storetypename,
+    required this.freedeliveryname,
+    required this.halalname,
+    required this.promoname,
+    required this.cuisinesitems,
+    required this.cuisinesidwithname,
   });
 
   @override
@@ -34,12 +48,32 @@ class _SortPageState extends State<CuisinesPage> {
   int? _selectedIndex;
   bool? issearch;
   Map<String, bool> values = {};
+  String allcuisines = '';
 
   @override
   void initState() {
     super.initState();
     issearch = false;
     log('coming Cuisines Page');
+
+    if (widget.cuisinesid.isNotEmpty) {
+      log('not empty');
+      log(widget.cuisinesid.toString());
+      for (var element in widget.cuisinesitems) {
+        log(widget.cuisinesidwithname[element].toString());
+        if (widget.cuisinesidwithname[element].toString() ==
+            widget.cuisinesid) {
+          log('true');
+          values[element] = true;
+        } else {
+          values[element] = false;
+        }
+      }
+    } else {
+      for (var element in widget.cuisinesitems) {
+        values[element] = false;
+      }
+    }
   }
 
   var tmpArray = [];
@@ -47,9 +81,14 @@ class _SortPageState extends State<CuisinesPage> {
   getCheckboxItems() {
     values.forEach((key, value) {
       if (value == true) {
-        tmpArray.add(key);
+        tmpArray.add(widget.cuisinesidwithname[key]);
       }
     });
+
+    setState(() {
+      allcuisines = tmpArray.join(', ');
+    });
+    log(allcuisines.toString());
   }
 
   @override
@@ -57,23 +96,31 @@ class _SortPageState extends State<CuisinesPage> {
     final topdata = context.watch<TopSearchCubit>().state;
     if (topdata.topsearchdata != null) {
       cuisines = topdata.topsearchdata!.cuisines;
-      for (var element in cuisines!) {
-        values[element.cuisineName] = false;
-      }
+
       log(values.toString());
     }
 
     return issearch!
         ? TopsearchPage(
+            cuisinesname: widget.cuisinesname,
+            freedeliveryname: widget.freedeliveryname,
+            halalname: widget.halalname,
+            promoname: widget.promoname,
+            sortbyname: widget.sortbyname,
+            storetypename: widget.storetypename,
             sortby: '',
             itemname: widget.itemname,
             issearchfoud: true,
             cuisinesId: widget.cuisinesid,
             storetypeid: widget.storetypeid,
-            checkname: widget.checkname,
             iscomingfromsort: true,
             searchname: '',
-            isreset: false,
+            selectedindexforstoretype: _selectedIndex,
+            ischecked: true,
+            allcuisines: allcuisines,
+            freedeliveryid: '',
+            halalid: '',
+            promoid: '',
           )
         : Scaffold(
             body: SafeArea(
@@ -140,6 +187,8 @@ class _SortPageState extends State<CuisinesPage> {
                           return Column(
                             children: [
                               CheckboxListTile(
+                                activeColor:
+                                    const Color.fromARGB(255, 236, 28, 60),
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
                                 visualDensity: const VisualDensity(
@@ -147,9 +196,8 @@ class _SortPageState extends State<CuisinesPage> {
                                   vertical: VisualDensity.minimumDensity,
                                 ),
                                 dense: true,
-                                checkColor:
-                                    const Color.fromARGB(255, 236, 28, 60),
-                                value: values[cuisines![index].cuisineName],
+                                checkColor: Colors.white,
+                                value: values[widget.cuisinesitems[index]],
                                 title: Row(
                                   children: [
                                     const SizedBox(
@@ -162,8 +210,9 @@ class _SortPageState extends State<CuisinesPage> {
                                   ],
                                 ),
                                 onChanged: (value) {
+                                  log('Changes');
                                   setState(() {
-                                    values[cuisines![index].cuisineName] =
+                                    values[widget.cuisinesitems[index]] =
                                         value!;
                                   });
                                 },
@@ -196,6 +245,7 @@ class _SortPageState extends State<CuisinesPage> {
                               onPressed: () {
                                 setState(() {
                                   issearch = true;
+                                  getCheckboxItems();
                                 });
                               },
                               child: Text(
@@ -205,7 +255,9 @@ class _SortPageState extends State<CuisinesPage> {
                               ),
                             ),
                           )),
-                      widget.checkname.isEmpty
+                      widget.storetypename.isEmpty &&
+                              widget.sortbyname.isEmpty &&
+                              widget.cuisinesname.isEmpty
                           ? _selectedIndex == null
                               ? const SizedBox()
                               : Padding(

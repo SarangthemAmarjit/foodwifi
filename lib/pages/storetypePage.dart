@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,17 +11,31 @@ import 'package:google_fonts/google_fonts.dart';
 class StorePage extends StatefulWidget {
   final String title;
   final String itemname;
-  final String checkname;
+  final int? selectedindexforstoretype;
   final String cuisinesid;
   final String storetypeid;
+  final String sortbyname;
+  final String cuisinesname;
+  final String storetypename;
+  final bool freedeliveryname;
+  final bool halalname;
+  final bool promoname;
+  final List storeidlist;
 
   const StorePage({
     super.key,
     required this.title,
     required this.itemname,
-    required this.checkname,
     required this.cuisinesid,
     required this.storetypeid,
+    required this.sortbyname,
+    required this.cuisinesname,
+    required this.storetypename,
+    required this.freedeliveryname,
+    required this.halalname,
+    required this.promoname,
+    this.selectedindexforstoretype,
+    required this.storeidlist,
   });
 
   @override
@@ -31,11 +47,24 @@ class _SortPageState extends State<StorePage> {
 
   int? _selectedIndex;
   bool? issearch;
+  String? selectedstoretype;
 
   @override
   void initState() {
     super.initState();
     issearch = false;
+    log('Store typeid :${widget.storetypeid}');
+    if (widget.storetypeid.isNotEmpty) {
+      setState(() {
+        _selectedIndex = widget.storeidlist.indexOf(widget.storetypeid);
+      });
+    } else {
+      if (widget.selectedindexforstoretype != null) {
+        setState(() {
+          _selectedIndex = widget.selectedindexforstoretype;
+        });
+      }
+    }
   }
 
   @override
@@ -52,10 +81,20 @@ class _SortPageState extends State<StorePage> {
             issearchfoud: true,
             cuisinesId: widget.cuisinesid,
             storetypeid: storetype![_selectedIndex!].id,
-            checkname: widget.checkname,
             iscomingfromsort: true,
             searchname: '',
-            isreset: false,
+            cuisinesname: widget.cuisinesname,
+            freedeliveryname: widget.freedeliveryname,
+            halalname: widget.halalname,
+            promoname: widget.promoname,
+            sortbyname: widget.sortbyname,
+            storetypename: widget.storetypename,
+            selectedindexforstoretype: _selectedIndex!,
+            ischecked: false,
+            allcuisines: '',
+            freedeliveryid: '',
+            halalid: '',
+            promoid: '',
           )
         : Scaffold(
             body: SafeArea(
@@ -185,7 +224,9 @@ class _SortPageState extends State<StorePage> {
                               ),
                             ),
                           )),
-                      widget.checkname.isEmpty
+                      widget.storetypename.isEmpty &&
+                              widget.sortbyname.isEmpty &&
+                              widget.cuisinesname.isEmpty
                           ? _selectedIndex == null
                               ? const SizedBox()
                               : Padding(

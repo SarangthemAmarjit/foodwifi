@@ -7,13 +7,15 @@ import 'package:foodwifi/pages/homepage.dart';
 import 'package:foodwifi/pages/productpage.dart';
 import 'package:foodwifi/pages/searchrestuarent.dart';
 import 'package:foodwifi/pages/sortpage.dart';
+import 'package:foodwifi/pages/splashscreen.dart';
 import 'package:foodwifi/pages/storetypePage.dart';
 import 'package:foodwifi/pages/topsearch.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: [
-    AutoRoute(page: HomePage, initial: true, path: '/home'),
+    AutoRoute(page: SplashPage, initial: true, path: '/splash'),
+    AutoRoute(page: HomePage, path: '/home'),
     AutoRoute(
       page: ProductPage,
     ),

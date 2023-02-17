@@ -71,7 +71,7 @@ class SixRowList extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         physics: const PageScrollPhysics()
                             .applyTo(const BouncingScrollPhysics()),
-                        itemCount: firstlistitems[5].length,
+                        itemCount: firstlistitems[4].length,
                         itemBuilder: ((
                           context,
                           index,
@@ -92,11 +92,11 @@ class SixRowList extends StatelessWidget {
                                     child: InkWell(
                                       onTap: () {
                                         context.router.push(ProductRoute(
-                                          id: firstlistitems[5][index]!
+                                          id: firstlistitems[4][index]!
                                               .id
                                               .toString(),
                                           itemname:
-                                              firstlistitems[5][index]!.title!,
+                                              firstlistitems[4][index]!.title!,
                                           iscomingfromsearch: false,
                                           index: 0,
                                         ));
@@ -105,7 +105,7 @@ class SixRowList extends StatelessWidget {
                                         fadeInDuration:
                                             const Duration(seconds: 1),
                                         imageUrl:
-                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[5][index]!.img!}',
+                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[4][index]!.img!}',
                                         fit: BoxFit.cover,
                                         progressIndicatorBuilder:
                                             (context, url, downloadProgress) =>
@@ -127,7 +127,7 @@ class SixRowList extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          firstlistitems[5][index]!.title!,
+                                          firstlistitems[4][index]!.title!,
                                           style:
                                               GoogleFonts.kreon(fontSize: 12),
                                         ),
@@ -137,11 +137,11 @@ class SixRowList extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                firstlistitems[5][index]!.description != null
+                                firstlistitems[4][index]!.description != null
                                     ? Padding(
                                         padding: const EdgeInsets.only(top: 5),
                                         child: Text(
-                                          firstlistitems[5][index]!
+                                          firstlistitems[4][index]!
                                               .description!,
                                           style: GoogleFonts.kreon(
                                               fontSize: 12,
@@ -161,7 +161,7 @@ class SixRowList extends StatelessWidget {
                                             Color.fromARGB(255, 220, 204, 52),
                                       ),
                                       Text(
-                                        firstlistitems[5][index]!.rating!,
+                                        firstlistitems[4][index]!.rating!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(
@@ -176,7 +176,7 @@ class SixRowList extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        firstlistitems[5][index]!.time!,
+                                        firstlistitems[4][index]!.time!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(
@@ -191,7 +191,7 @@ class SixRowList extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        firstlistitems[5][index]!.distance!,
+                                        firstlistitems[4][index]!.distance!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(

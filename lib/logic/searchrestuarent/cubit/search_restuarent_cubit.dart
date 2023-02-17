@@ -24,7 +24,10 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
       String? cuisinesid,
       String? allcuisinese,
       String? Storetypeid,
-      String? soryby}) async {
+      String? soryby,
+      String? freedelivery,
+      String? halal,
+      String? promo}) async {
     if (page < 2) {
       emit(const SearchRestuarentState(
           searchdata: [],
@@ -37,6 +40,10 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
       log('Sort by :$soryby');
       log('cuisine ID :$cuisinesid');
       log('Store ID :$Storetypeid');
+      log('all Cuisines Checked : $allcuisinese');
+      log('free delivery id : $freedelivery');
+      log('halal id : $halal');
+      log('promo id : $promo');
       if (isMoredata) {
         final queryParameters = {
           '_search': itemname,
@@ -46,9 +53,9 @@ class SearchRestuarentCubit extends Cubit<SearchRestuarentState> {
           'sort_by': soryby,
           'cuisines': iscomigfromcheckbox ? allcuisinese : cuisinesid,
           'store_type_id': Storetypeid,
-          'halal': '',
-          'free_delivery': '',
-          'promo': ''
+          'halal': halal,
+          'free_delivery': freedelivery,
+          'promo': promo
         };
         final baseHeader = {'Branchid': "1"};
         final response = await http.get(

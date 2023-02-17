@@ -33,7 +33,7 @@ class EightRowList extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 3),
                       child: Text(
-                        'Best of Local',
+                        'Support Local Favourites',
                         style: GoogleFonts.kreon(fontSize: 20),
                       ),
                     ),
@@ -62,7 +62,7 @@ class EightRowList extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         physics: const PageScrollPhysics()
                             .applyTo(const BouncingScrollPhysics()),
-                        itemCount: firstlistitems[7].length,
+                        itemCount: firstlistitems[4].length,
                         itemBuilder: ((
                           context,
                           index,
@@ -86,10 +86,10 @@ class EightRowList extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               context.router.push(ProductRoute(
-                                                id: firstlistitems[7][index]!
+                                                id: firstlistitems[4][index]!
                                                     .id
                                                     .toString(),
-                                                itemname: firstlistitems[7]
+                                                itemname: firstlistitems[4]
                                                         [index]!
                                                     .title!,
                                                 iscomingfromsearch: false,
@@ -100,7 +100,7 @@ class EightRowList extends StatelessWidget {
                                               fadeInDuration:
                                                   const Duration(seconds: 1),
                                               imageUrl:
-                                                  'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[7][index]!.img!}',
+                                                  'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[4][index]!.img!}',
                                               fit: BoxFit.cover,
                                               progressIndicatorBuilder:
                                                   (context, url,
@@ -155,7 +155,7 @@ class EightRowList extends StatelessWidget {
                                                               const EdgeInsets
                                                                   .only(top: 7),
                                                           child: Text(
-                                                            firstlistitems[7]
+                                                            firstlistitems[4]
                                                                     [index]!
                                                                 .title!,
                                                             style: GoogleFonts.kreon(
@@ -167,7 +167,7 @@ class EightRowList extends StatelessWidget {
                                                                         .bold),
                                                           ),
                                                         ),
-                                                        firstlistitems[7]
+                                                        firstlistitems[4]
                                                                         [index]!
                                                                     .description !=
                                                                 null
@@ -178,7 +178,7 @@ class EightRowList extends StatelessWidget {
                                                                         top: 5),
                                                                 child: Text(
                                                                   firstlistitems[
-                                                                              7]
+                                                                              4]
                                                                           [
                                                                           index]!
                                                                       .description!,
@@ -198,7 +198,7 @@ class EightRowList extends StatelessWidget {
                                                             children: [
                                                               Text(
                                                                 firstlistitems[
-                                                                            7]
+                                                                            4]
                                                                         [index]!
                                                                     .distance!,
                                                                 style: GoogleFonts.kreon(
@@ -219,7 +219,7 @@ class EightRowList extends StatelessWidget {
                                                               ),
                                                               Text(
                                                                 firstlistitems[
-                                                                            7]
+                                                                            4]
                                                                         [index]!
                                                                     .time!,
                                                                 style: GoogleFonts.kreon(
@@ -250,7 +250,7 @@ class EightRowList extends StatelessWidget {
                                                               ),
                                                               Text(
                                                                 firstlistitems[
-                                                                            7]
+                                                                            4]
                                                                         [index]!
                                                                     .rating!,
                                                                 style: GoogleFonts.kreon(

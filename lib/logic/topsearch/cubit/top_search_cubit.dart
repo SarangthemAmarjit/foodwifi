@@ -9,7 +9,9 @@ part 'top_search_state.dart';
 
 class TopSearchCubit extends Cubit<TopSearchState> {
   TopSearchCubit()
-      : super(const TopSearchState(status: Topsearchstatus.initial));
+      : super(const TopSearchState(status: Topsearchstatus.initial)) {
+    gettopsearchdata();
+  }
 
   bool get isLoading => state.status == Topsearchstatus.loading;
   Future<void> gettopsearchdata() async {

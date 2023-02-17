@@ -47,17 +47,17 @@ class FifthRowList extends StatelessWidget {
                         height: 300,
                       )
                     : ListView.builder(
-                        controller: PageController(viewportFraction: 0.4),
+                        controller: PageController(viewportFraction: 0.3),
                         scrollDirection: Axis.horizontal,
                         physics: const PageScrollPhysics()
                             .applyTo(const BouncingScrollPhysics()),
-                        itemCount: firstlistitems[4].length,
+                        itemCount: firstlistitems[3].length,
                         itemBuilder: ((
                           context,
                           index,
                         ) {
                           return Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 20),
+                            padding: const EdgeInsets.only(top: 10, left: 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -67,15 +67,15 @@ class FifthRowList extends StatelessWidget {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: SizedBox(
-                                    width: 135,
+                                    width: 97,
                                     child: InkWell(
                                       onTap: () {
                                         context.router.push(ProductRoute(
-                                          id: firstlistitems[6][index]!
+                                          id: firstlistitems[3][index]!
                                               .id
                                               .toString(),
                                           itemname:
-                                              firstlistitems[6][index]!.title!,
+                                              firstlistitems[3][index]!.title!,
                                           iscomingfromsearch: false,
                                           index: 0,
                                         ));
@@ -84,7 +84,8 @@ class FifthRowList extends StatelessWidget {
                                         fadeInDuration:
                                             const Duration(seconds: 1),
                                         imageUrl:
-                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[4][index]!.img!}',
+                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[3][index]!.img!}',
+                                        width: 100,
                                         fit: BoxFit.cover,
                                         progressIndicatorBuilder:
                                             (context, url, downloadProgress) =>
@@ -100,18 +101,18 @@ class FifthRowList extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 7),
                                   child: Text(
-                                    firstlistitems[4][index]!.title!,
-                                    style: GoogleFonts.kreon(fontSize: 15),
+                                    firstlistitems[3][index]!.title!,
+                                    style: GoogleFonts.kreon(fontSize: 13),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 5),
                                   child: Text(
-                                    firstlistitems[4][index]!.title!,
+                                    firstlistitems[3][index]!.title!,
                                     style: GoogleFonts.kreon(
                                         fontSize: 11,
                                         color: const Color.fromARGB(
-                                            255, 148, 144, 144)),
+                                            255, 138, 133, 133)),
                                   ),
                                 ),
                                 Padding(
@@ -119,7 +120,7 @@ class FifthRowList extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       Text(
-                                        firstlistitems[4][index]!.time!,
+                                        firstlistitems[3][index]!.time!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(
@@ -134,7 +135,7 @@ class FifthRowList extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        firstlistitems[4][index]!.distance!,
+                                        firstlistitems[3][index]!.distance!,
                                         style: GoogleFonts.kreon(
                                             fontSize: 12,
                                             color: const Color.fromARGB(

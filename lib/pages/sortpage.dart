@@ -11,18 +11,30 @@ class SortPage extends StatefulWidget {
   final String selectedindexforsort;
   final String title;
   final String itemname;
-  final String checkname;
+  final String sortbyname;
+  final String cuisinesname;
+  final String storetypename;
+  final bool freedeliveryname;
+  final bool halalname;
+  final bool promoname;
   final String cuisinesid;
   final String storetypeid;
+  final String allcuisines;
 
   const SortPage({
     super.key,
     required this.title,
     required this.itemname,
-    required this.checkname,
     required this.cuisinesid,
     required this.storetypeid,
     required this.selectedindexforsort,
+    required this.sortbyname,
+    required this.cuisinesname,
+    required this.storetypename,
+    required this.freedeliveryname,
+    required this.halalname,
+    required this.promoname,
+    required this.allcuisines,
   });
 
   @override
@@ -61,23 +73,43 @@ class _SortPageState extends State<SortPage> {
             issearchfoud: true,
             cuisinesId: widget.cuisinesid,
             storetypeid: widget.storetypeid,
-            checkname: widget.checkname,
+            cuisinesname: widget.cuisinesname,
+            freedeliveryname: widget.freedeliveryname,
+            halalname: widget.halalname,
+            promoname: widget.promoname,
+            sortbyname: widget.sortbyname,
+            storetypename: widget.storetypename,
             sortby: sortby,
             iscomingfromsort: true,
             searchname: '',
-            isreset: false,
+            selectedindexforstoretype: _selectedIndex!,
+            ischecked: widget.allcuisines.isNotEmpty ? true : false,
+            allcuisines: widget.allcuisines,
+            freedeliveryid: widget.freedeliveryname ? '1' : '',
+            halalid: widget.halalname ? '1' : '',
+            promoid: widget.promoname ? '1' : '',
           )
         : isreset!
             ? TopsearchPage(
+                cuisinesname: '',
+                freedeliveryname: widget.freedeliveryname,
+                halalname: widget.halalname,
+                promoname: widget.promoname,
+                sortbyname: '',
+                storetypename: '',
                 itemname: widget.itemname,
                 issearchfoud: true,
                 cuisinesId: '',
                 storetypeid: '',
-                checkname: '',
                 sortby: '',
                 iscomingfromsort: true,
                 searchname: '',
-                isreset: isreset!,
+                selectedindexforstoretype: _selectedIndex!,
+                ischecked: false,
+                allcuisines: '',
+                freedeliveryid: widget.freedeliveryname ? '1' : '',
+                halalid: widget.halalname ? '1' : '',
+                promoid: widget.promoname ? '1' : '',
               )
             : Scaffold(
                 body: SafeArea(
@@ -220,7 +252,9 @@ class _SortPageState extends State<SortPage> {
                                   ),
                                 ),
                               )),
-                          widget.checkname.isEmpty
+                          widget.sortbyname.isEmpty &&
+                                  widget.storetypename.isEmpty &&
+                                  widget.cuisinesname.isEmpty
                               ? _selectedIndex == null
                                   ? const SizedBox()
                                   : Padding(

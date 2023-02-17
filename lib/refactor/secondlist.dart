@@ -35,7 +35,7 @@ class SecondRowList extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         physics: const PageScrollPhysics()
                             .applyTo(const BouncingScrollPhysics()),
-                        itemCount: firstlistitems[1].length,
+                        itemCount: firstlistitems[0].length,
                         itemBuilder: ((
                           context,
                           index,
@@ -44,21 +44,25 @@ class SecondRowList extends StatelessWidget {
                             onTap: () {
                               context.router.push(SearchRestuarentRoute(
                                 itemname:
-                                    firstlistitems[1][index]!.keyword == null
+                                    firstlistitems[0][index]!.keyword == null
                                         ? ''
-                                        : firstlistitems[1][index]!.keyword!,
+                                        : firstlistitems[0][index]!.keyword!,
                                 issearchfoud: false,
                                 cuisinesId: '',
                                 storetypeid: '',
-                                checkname: firstlistitems[1][index]!.keyword ==
-                                            'Grocery' ||
-                                        firstlistitems[1][index]!.keyword ==
-                                            'Fresh meat'
-                                    ? 'Store types'
-                                    : '',
                                 sortby: '',
-                                issortbypress: false,
-                                isreset: false,
+                                cuisinesname: '',
+                                freedeliveryname: false,
+                                halalname: false,
+                                promoname: false,
+                                sortbyname: '',
+                                storetypename: '',
+                                selectedindexforstoretype: null,
+                                ischecked: false,
+                                allcuisinese: '',
+                                freedeliveryid: '',
+                                halalid: '',
+                                promoid: '',
                               ));
                             },
                             child: Padding(
@@ -74,7 +78,7 @@ class SecondRowList extends StatelessWidget {
                                         fadeInDuration:
                                             const Duration(seconds: 1),
                                         imageUrl:
-                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[1][index]!.img!}',
+                                            'https://globizs.sgp1.cdn.digitaloceanspaces.com/foodwifi/${firstlistitems[0][index]!.img!}',
                                         fit: BoxFit.cover,
                                         progressIndicatorBuilder:
                                             (context, url, downloadProgress) =>
@@ -89,7 +93,7 @@ class SecondRowList extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 7),
                                     child: Text(
-                                      firstlistitems[1][index]!.title!,
+                                      firstlistitems[0][index]!.title!,
                                       style: GoogleFonts.kreon(fontSize: 12),
                                     ),
                                   ),

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodwifi/logic/topsearch/cubit/top_search_cubit.dart';
 import 'package:foodwifi/model/allbelowmodel.dart';
+import 'package:foodwifi/model/searchfiltermodal.dart';
 import 'package:foodwifi/model/searchmodal.dart';
 import 'package:foodwifi/refactor/filtercontainer.dart';
 import 'package:foodwifi/refactor/skeleton.dart';
@@ -19,21 +21,39 @@ class SearchRestuarentPage extends StatefulWidget {
   final String itemname;
   final String cuisinesId;
   final String storetypeid;
-  final String checkname;
+  final String sortbyname;
+  final String cuisinesname;
+  final String storetypename;
+  late bool freedeliveryname;
+  late bool halalname;
+  late bool promoname;
+  final String freedeliveryid;
+  final String halalid;
+  final String promoid;
   final String sortby;
-  final bool issortbypress;
-  final bool isreset;
+  final int? selectedindexforstoretype;
+  final bool ischecked;
+  final String allcuisinese;
 
-  const SearchRestuarentPage({
+  SearchRestuarentPage({
     super.key,
     required this.itemname,
     required this.issearchfoud,
     required this.cuisinesId,
     required this.storetypeid,
-    required this.checkname,
     required this.sortby,
-    required this.issortbypress,
-    required this.isreset,
+    required this.sortbyname,
+    required this.cuisinesname,
+    required this.storetypename,
+    required this.freedeliveryname,
+    required this.halalname,
+    required this.promoname,
+    this.selectedindexforstoretype,
+    required this.ischecked,
+    required this.allcuisinese,
+    required this.freedeliveryid,
+    required this.halalid,
+    required this.promoid,
   });
 
   @override
@@ -46,14 +66,13 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
   bool? isempty;
   int data = 1;
   int? ind;
-  bool? ischecked;
 
   List<SearchRestuarentModal> allsearchdata = [];
 
   @override
   void initState() {
     super.initState();
-    ischecked = false;
+
     if (widget.issearchfoud) {
       getdatatopsearch();
     } else {
@@ -71,13 +90,17 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
           log(data.toString());
           var allsearchitems =
               await context.read<SearchRestuarentCubit>().getsearchdata(
+                    freedelivery: widget.freedeliveryid,
+                    halal: widget.halalid,
+                    promo: widget.promoid,
+                    allcuisinese: widget.allcuisinese,
                     itemname: widget.itemname,
                     page: data,
                     isMoredata: true,
                     soryby: widget.sortby,
                     Storetypeid: widget.storetypeid,
                     cuisinesid: widget.cuisinesId,
-                    iscomigfromcheckbox: ischecked!,
+                    iscomigfromcheckbox: widget.ischecked,
                   );
 
           setState(() {
@@ -96,7 +119,7 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
           itemname: widget.itemname,
           page: 1,
           isMoredata: true,
-          iscomigfromcheckbox: ischecked!,
+          iscomigfromcheckbox: widget.ischecked,
         );
 
     setState(() {
@@ -106,19 +129,22 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
 
   getdatatopsearch() async {
     var finaldata = await context.read<SearchRestuarentCubit>().getsearchdata(
+          freedelivery: widget.freedeliveryid,
+          halal: widget.halalid,
+          promo: widget.promoid,
+          allcuisinese: widget.allcuisinese,
           soryby: widget.sortby,
           Storetypeid: widget.storetypeid,
           cuisinesid: widget.cuisinesId,
           itemname: widget.itemname,
           page: 1,
           isMoredata: true,
-          iscomigfromcheckbox: ischecked!,
+          iscomigfromcheckbox: widget.ischecked,
         );
 
     setState(() {
       allsearchdata = allsearchdata + finaldata!;
     });
-    ind = seachitems.indexOf(widget.checkname);
   }
 
   List seachitems = [
@@ -157,17 +183,39 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
     }
   }
 
+  List<StoreType>? storetype;
+  int? _selectedIndex;
+  List cuisinesitems = [];
+  List cuisinesid = [];
+  List<Cuisine>? cuisines;
+  Map cuisineidwithname = {};
+  List storetypeidlist = [];
+
   @override
   Widget build(BuildContext context) {
-    log(widget.checkname);
     final searchdata = context.watch<SearchRestuarentCubit>().state;
     isempty = searchdata.isempty;
     ismoreloading = searchdata.isloading;
+    final topdata = context.watch<TopSearchCubit>().state;
+    if (topdata.topsearchdata != null) {
+      storetype = topdata.topsearchdata!.storeTypes;
+      cuisines = topdata.topsearchdata!.cuisines;
+      for (var element in cuisines!) {
+        cuisinesitems.add(element.cuisineName);
+        cuisinesid.add(element.id);
+      }
+      cuisineidwithname = Map.fromIterables(cuisinesitems, cuisinesid);
+      for (var element in storetype!) {
+        storetypeidlist.add(element.id);
+      }
+    }
+
     // allsearchdata = searchdata.searchdata;
 
     Future<bool> showExitPopup() async {
-      context.router.replaceNamed('/home');
-      return false;
+      context.router
+          .pushAndPopUntil(const HomeRoute(), predicate: (_) => false);
+      return true;
     }
 
     return WillPopScope(
@@ -198,8 +246,9 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              context.router
-                                                  .replaceNamed('/home');
+                                              context.router.pushAndPopUntil(
+                                                  const HomeRoute(),
+                                                  predicate: (_) => false);
                                             },
                                             child: const Icon(
                                               Icons.arrow_back_ios,
@@ -236,45 +285,228 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                               onTap: () {
                                                 switch (index) {
                                                   case 0:
-                                                    context.router.push(
-                                                        SortRoute(
-                                                            title: seachitems[
-                                                                index],
-                                                            checkname: widget
-                                                                .checkname,
-                                                            itemname:
-                                                                widget.itemname,
-                                                            cuisinesid: widget
-                                                                .cuisinesId,
-                                                            storetypeid: widget
-                                                                .storetypeid,
-                                                            selectedindexforsort:
-                                                                widget.sortby));
+                                                    context.router.push(SortRoute(
+                                                        cuisinesname:
+                                                            widget.cuisinesname,
+                                                        freedeliveryname: widget
+                                                            .freedeliveryname,
+                                                        halalname:
+                                                            widget.halalname,
+                                                        promoname:
+                                                            widget.promoname,
+                                                        sortbyname: 'Sort by',
+                                                        storetypename: widget
+                                                            .storetypename,
+                                                        title:
+                                                            seachitems[index],
+                                                        itemname:
+                                                            widget.itemname,
+                                                        cuisinesid:
+                                                            widget.cuisinesId,
+                                                        storetypeid:
+                                                            widget.storetypeid,
+                                                        selectedindexforsort:
+                                                            widget.sortby,
+                                                        allcuisines: widget
+                                                            .allcuisinese));
                                                     break;
                                                   case 1:
-                                                    context.router
-                                                        .push(StoreRoute(
-                                                      title: seachitems[index],
-                                                      checkname:
-                                                          widget.checkname,
-                                                      itemname: widget.itemname,
-                                                      cuisinesid:
-                                                          widget.cuisinesId,
-                                                      storetypeid:
-                                                          widget.storetypeid,
-                                                    ));
+                                                    if (widget.storetypeid
+                                                        .isNotEmpty) {
+                                                      for (var element
+                                                          in storetype!) {
+                                                        if (element.id ==
+                                                            widget
+                                                                .storetypeid) {
+                                                          setState(() {
+                                                            _selectedIndex =
+                                                                storetype!
+                                                                    .indexOf(
+                                                                        element);
+                                                          });
+                                                          log('Selected Index :$_selectedIndex');
+                                                        }
+                                                      }
+                                                    }
+
+                                                    context.router.push(StoreRoute(
+                                                        title:
+                                                            seachitems[index],
+                                                        itemname:
+                                                            widget.itemname,
+                                                        cuisinesid:
+                                                            widget.cuisinesId,
+                                                        storetypeid:
+                                                            widget.storetypeid,
+                                                        cuisinesname:
+                                                            widget.cuisinesname,
+                                                        freedeliveryname: widget
+                                                            .freedeliveryname,
+                                                        halalname:
+                                                            widget.halalname,
+                                                        promoname:
+                                                            widget.promoname,
+                                                        sortbyname:
+                                                            widget.sortbyname,
+                                                        storetypename:
+                                                            'Store types',
+                                                        selectedindexforstoretype:
+                                                            widget
+                                                                .selectedindexforstoretype,
+                                                        storeidlist:
+                                                            storetypeidlist));
                                                     break;
                                                   case 2:
                                                     context.router
                                                         .push(CuisinesRoute(
+                                                      cuisinesname: 'Cuisines',
+                                                      freedeliveryname: widget
+                                                          .freedeliveryname,
+                                                      halalname:
+                                                          widget.halalname,
+                                                      promoname:
+                                                          widget.promoname,
+                                                      sortbyname:
+                                                          widget.sortbyname,
+                                                      storetypename:
+                                                          widget.storetypename,
                                                       title: seachitems[index],
-                                                      checkname:
-                                                          widget.checkname,
                                                       itemname: widget.itemname,
                                                       cuisinesid:
                                                           widget.cuisinesId,
                                                       storetypeid:
                                                           widget.storetypeid,
+                                                      cuisinesitems:
+                                                          cuisinesitems,
+                                                      cuisinesidwithname:
+                                                          cuisineidwithname,
+                                                    ));
+                                                    break;
+                                                  case 3:
+                                                    setState(() {
+                                                      widget.freedeliveryname =
+                                                          !widget
+                                                              .freedeliveryname;
+                                                    });
+                                                    context.router
+                                                        .push(TopsearchRoute(
+                                                      cuisinesname:
+                                                          widget.cuisinesname,
+                                                      freedeliveryname: widget
+                                                          .freedeliveryname,
+                                                      halalname:
+                                                          widget.halalname,
+                                                      promoname:
+                                                          widget.promoname,
+                                                      sortbyname:
+                                                          widget.sortbyname,
+                                                      storetypename:
+                                                          widget.storetypename,
+                                                      itemname: widget.itemname,
+                                                      storetypeid:
+                                                          widget.storetypeid,
+                                                      allcuisines:
+                                                          widget.allcuisinese,
+                                                      cuisinesId:
+                                                          widget.cuisinesId,
+                                                      ischecked: false,
+                                                      iscomingfromsort: true,
+                                                      issearchfoud: false,
+                                                      searchname: '',
+                                                      freedeliveryid: widget
+                                                              .freedeliveryname
+                                                          ? '1'
+                                                          : '',
+                                                      halalid: widget.halalname
+                                                          ? '1'
+                                                          : '',
+                                                      promoid: widget.promoname
+                                                          ? '1'
+                                                          : '',
+                                                    ));
+                                                    break;
+                                                  case 4:
+                                                    setState(() {
+                                                      widget.halalname =
+                                                          !widget.halalname;
+                                                    });
+                                                    context.router
+                                                        .push(TopsearchRoute(
+                                                      cuisinesname:
+                                                          widget.cuisinesname,
+                                                      freedeliveryname: widget
+                                                          .freedeliveryname,
+                                                      halalname:
+                                                          widget.halalname,
+                                                      promoname:
+                                                          widget.promoname,
+                                                      sortbyname:
+                                                          widget.sortbyname,
+                                                      storetypename:
+                                                          widget.storetypename,
+                                                      itemname: widget.itemname,
+                                                      storetypeid:
+                                                          widget.storetypeid,
+                                                      allcuisines:
+                                                          widget.allcuisinese,
+                                                      cuisinesId:
+                                                          widget.cuisinesId,
+                                                      ischecked: false,
+                                                      iscomingfromsort: true,
+                                                      issearchfoud: false,
+                                                      searchname: '',
+                                                      freedeliveryid: widget
+                                                              .freedeliveryname
+                                                          ? '1'
+                                                          : '',
+                                                      halalid: widget.halalname
+                                                          ? '1'
+                                                          : '',
+                                                      promoid: widget.promoname
+                                                          ? '1'
+                                                          : '',
+                                                    ));
+                                                    break;
+                                                  case 5:
+                                                    setState(() {
+                                                      widget.promoname =
+                                                          !widget.promoname;
+                                                    });
+                                                    context.router
+                                                        .push(TopsearchRoute(
+                                                      cuisinesname:
+                                                          widget.cuisinesname,
+                                                      freedeliveryname: widget
+                                                          .freedeliveryname,
+                                                      halalname:
+                                                          widget.halalname,
+                                                      promoname:
+                                                          widget.promoname,
+                                                      sortbyname:
+                                                          widget.sortbyname,
+                                                      storetypename:
+                                                          widget.storetypename,
+                                                      itemname: widget.itemname,
+                                                      storetypeid:
+                                                          widget.storetypeid,
+                                                      allcuisines:
+                                                          widget.allcuisinese,
+                                                      cuisinesId:
+                                                          widget.cuisinesId,
+                                                      ischecked: false,
+                                                      iscomingfromsort: true,
+                                                      issearchfoud: false,
+                                                      searchname: '',
+                                                      freedeliveryid: widget
+                                                              .freedeliveryname
+                                                          ? '1'
+                                                          : '',
+                                                      halalid: widget.halalname
+                                                          ? '1'
+                                                          : '',
+                                                      promoid: widget.promoname
+                                                          ? '1'
+                                                          : '',
                                                     ));
                                                     break;
                                                   default:
@@ -291,6 +523,18 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                                 child: Row(
                                                   children: [
                                                     FilterContainer(
+                                                        cuisinesname:
+                                                            widget.cuisinesname,
+                                                        freedeliveryname: widget
+                                                            .freedeliveryname,
+                                                        halalname:
+                                                            widget.halalname,
+                                                        promoname:
+                                                            widget.promoname,
+                                                        sortbyname:
+                                                            widget.sortbyname,
+                                                        storetypename: widget
+                                                            .storetypename,
                                                         issearchfoud:
                                                             widget.issearchfoud,
                                                         itemname:
@@ -299,12 +543,7 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                                             widget.cuisinesId,
                                                         storetypeid:
                                                             widget.storetypeid,
-                                                        checkname:
-                                                            widget.checkname,
                                                         sortby: widget.sortby,
-                                                        issortbypress: widget
-                                                            .issortbypress,
-                                                        isreset: widget.isreset,
                                                         seachitems: seachitems,
                                                         index: index)
                                                   ],
@@ -323,35 +562,199 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                             switch (index) {
                                               case 0:
                                                 context.router.push(SortRoute(
+                                                    cuisinesname:
+                                                        widget.cuisinesname,
+                                                    freedeliveryname:
+                                                        widget.freedeliveryname,
+                                                    halalname: widget.halalname,
+                                                    promoname: widget.promoname,
+                                                    sortbyname: 'Sort by',
+                                                    storetypename:
+                                                        widget.storetypename,
                                                     title: seachitems[index],
-                                                    checkname: widget.checkname,
                                                     itemname: widget.itemname,
                                                     cuisinesid:
                                                         widget.cuisinesId,
                                                     storetypeid:
                                                         widget.storetypeid,
                                                     selectedindexforsort:
-                                                        widget.sortby));
+                                                        widget.sortby,
+                                                    allcuisines:
+                                                        widget.allcuisinese));
                                                 break;
                                               case 1:
+                                                if (widget
+                                                    .storetypeid.isNotEmpty) {
+                                                  for (var element
+                                                      in storetype!) {
+                                                    if (element.id ==
+                                                        widget.storetypeid) {
+                                                      setState(() {
+                                                        _selectedIndex =
+                                                            storetype!.indexOf(
+                                                                element);
+                                                      });
+                                                      log('Selected Index :$_selectedIndex');
+                                                    }
+                                                  }
+                                                }
                                                 context.router.push(StoreRoute(
-                                                  title: seachitems[index],
-                                                  checkname: widget.checkname,
-                                                  itemname: widget.itemname,
-                                                  cuisinesid: widget.cuisinesId,
-                                                  storetypeid:
-                                                      widget.storetypeid,
-                                                ));
+                                                    cuisinesname:
+                                                        widget.cuisinesname,
+                                                    freedeliveryname:
+                                                        widget.freedeliveryname,
+                                                    halalname: widget.halalname,
+                                                    promoname: widget.promoname,
+                                                    sortbyname:
+                                                        widget.sortbyname,
+                                                    storetypename:
+                                                        'Store types',
+                                                    title: seachitems[index],
+                                                    itemname: widget.itemname,
+                                                    cuisinesid:
+                                                        widget.cuisinesId,
+                                                    storetypeid:
+                                                        widget.storetypeid,
+                                                    selectedindexforstoretype:
+                                                        widget
+                                                            .selectedindexforstoretype,
+                                                    storeidlist:
+                                                        storetypeidlist));
                                                 break;
                                               case 2:
                                                 context.router
                                                     .push(CuisinesRoute(
+                                                  cuisinesname: 'Cuisines',
+                                                  freedeliveryname:
+                                                      widget.freedeliveryname,
+                                                  halalname: widget.halalname,
+                                                  promoname: widget.promoname,
+                                                  sortbyname: widget.sortbyname,
+                                                  storetypename:
+                                                      widget.storetypename,
                                                   title: seachitems[index],
-                                                  checkname: widget.checkname,
                                                   itemname: widget.itemname,
                                                   cuisinesid: widget.cuisinesId,
                                                   storetypeid:
                                                       widget.storetypeid,
+                                                  cuisinesitems: cuisinesitems,
+                                                  cuisinesidwithname:
+                                                      cuisineidwithname,
+                                                ));
+                                                break;
+                                              case 3:
+                                                setState(() {
+                                                  widget.freedeliveryname =
+                                                      !widget.freedeliveryname;
+                                                });
+                                                log('free deliveryname : ${widget.freedeliveryname}');
+                                                context.router
+                                                    .push(TopsearchRoute(
+                                                  cuisinesname:
+                                                      widget.cuisinesname,
+                                                  freedeliveryname:
+                                                      widget.freedeliveryname,
+                                                  halalname: widget.halalname,
+                                                  promoname: widget.promoname,
+                                                  sortbyname: widget.sortbyname,
+                                                  storetypename:
+                                                      widget.storetypename,
+                                                  itemname: widget.itemname,
+                                                  storetypeid:
+                                                      widget.storetypeid,
+                                                  allcuisines:
+                                                      widget.allcuisinese,
+                                                  cuisinesId: widget.cuisinesId,
+                                                  ischecked: false,
+                                                  iscomingfromsort: true,
+                                                  issearchfoud: false,
+                                                  searchname: '',
+                                                  freedeliveryid:
+                                                      widget.freedeliveryname
+                                                          ? '1'
+                                                          : '',
+                                                  halalid: widget.halalname
+                                                      ? '1'
+                                                      : '',
+                                                  promoid: widget.promoname
+                                                      ? '1'
+                                                      : '',
+                                                ));
+                                                break;
+                                              case 4:
+                                                setState(() {
+                                                  widget.halalname =
+                                                      !widget.halalname;
+                                                });
+                                                context.router
+                                                    .push(TopsearchRoute(
+                                                  cuisinesname:
+                                                      widget.cuisinesname,
+                                                  freedeliveryname:
+                                                      widget.freedeliveryname,
+                                                  halalname: widget.halalname,
+                                                  promoname: widget.promoname,
+                                                  sortbyname: widget.sortbyname,
+                                                  storetypename:
+                                                      widget.storetypename,
+                                                  itemname: widget.itemname,
+                                                  storetypeid:
+                                                      widget.storetypeid,
+                                                  allcuisines:
+                                                      widget.allcuisinese,
+                                                  cuisinesId: widget.cuisinesId,
+                                                  ischecked: false,
+                                                  iscomingfromsort: true,
+                                                  issearchfoud: false,
+                                                  searchname: '',
+                                                  freedeliveryid:
+                                                      widget.freedeliveryname
+                                                          ? '1'
+                                                          : '',
+                                                  halalid: widget.halalname
+                                                      ? '1'
+                                                      : '',
+                                                  promoid: widget.promoname
+                                                      ? '1'
+                                                      : '',
+                                                ));
+                                                break;
+                                              case 5:
+                                                setState(() {
+                                                  widget.promoname =
+                                                      !widget.promoname;
+                                                });
+                                                context.router
+                                                    .push(TopsearchRoute(
+                                                  cuisinesname:
+                                                      widget.cuisinesname,
+                                                  freedeliveryname:
+                                                      widget.freedeliveryname,
+                                                  halalname: widget.halalname,
+                                                  promoname: widget.promoname,
+                                                  sortbyname: widget.sortbyname,
+                                                  storetypename:
+                                                      widget.storetypename,
+                                                  itemname: widget.itemname,
+                                                  storetypeid:
+                                                      widget.storetypeid,
+                                                  allcuisines:
+                                                      widget.allcuisinese,
+                                                  cuisinesId: widget.cuisinesId,
+                                                  ischecked: false,
+                                                  iscomingfromsort: true,
+                                                  issearchfoud: false,
+                                                  searchname: '',
+                                                  freedeliveryid:
+                                                      widget.freedeliveryname
+                                                          ? '1'
+                                                          : '',
+                                                  halalid: widget.halalname
+                                                      ? '1'
+                                                      : '',
+                                                  promoid: widget.promoname
+                                                      ? '1'
+                                                      : '',
                                                 ));
                                                 break;
                                               default:
@@ -367,6 +770,16 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                             child: Row(
                                               children: [
                                                 FilterContainer(
+                                                    cuisinesname:
+                                                        widget.cuisinesname,
+                                                    freedeliveryname:
+                                                        widget.freedeliveryname,
+                                                    halalname: widget.halalname,
+                                                    promoname: widget.promoname,
+                                                    sortbyname:
+                                                        widget.sortbyname,
+                                                    storetypename:
+                                                        widget.storetypename,
                                                     issearchfoud:
                                                         widget.issearchfoud,
                                                     itemname: widget.itemname,
@@ -374,11 +787,7 @@ class _SearchRestuarentPageState extends State<SearchRestuarentPage> {
                                                         widget.cuisinesId,
                                                     storetypeid:
                                                         widget.storetypeid,
-                                                    checkname: widget.checkname,
                                                     sortby: widget.sortby,
-                                                    issortbypress:
-                                                        widget.issortbypress,
-                                                    isreset: widget.isreset,
                                                     seachitems: seachitems,
                                                     index: index)
                                               ],
